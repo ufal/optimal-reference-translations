@@ -39,3 +39,27 @@ class Czert():
             return sentence_embedding.cpu().numpy()
         else:
             raise Exception("Unknown type out")
+
+
+class RobeCzech():
+    def __init__(self):
+        self.model = AutoModel.from_pretrained("ufal/robeczech-base")
+        self.tokenizer = AutoTokenizer.from_pretrained("ufal/robeczech-base")
+
+    def embd(self, sentence, type_out="cls"):
+        encoded_input = self.tokenizer(
+            sentence, padding=True, truncation=True, max_length=128, return_tensors='pt')
+        encoded_input = encoded_input.to(DEVICE)
+        with torch.no_grad():
+            output = self.model(**encoded_input)
+        if type_out == "cls":
+            return output[0][0, 0].cpu().numpy()
+        elif type_out == "pooler":
+            return output["pooler_output"][0].cpu().numpy()
+        elif type_out == "tokens":
+            sentence_embedding = mean_pooling(
+                output, encoded_input['attention_mask']
+            )
+            return sentence_embedding.cpu().numpy()
+        else:
+            raise Exception("Unknown type out")

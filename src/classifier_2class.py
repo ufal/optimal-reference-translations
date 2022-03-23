@@ -6,7 +6,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import train_test_split
 
-data = read_pickle("computed/czert-b.embd")
+data = read_pickle("computed/czertb-tokens.embd")
 
 data_x = []
 data_y = []
@@ -36,7 +36,7 @@ data_train, data_dev = train_test_split(
 data_train_x, data_train_y = zip(*data_train)
 data_dev_x, data_dev_y = zip(*data_dev)
 
-model = LogisticRegression(max_iter=1000)
+model = LogisticRegression(max_iter=500)
 model.fit(data_train_x, data_train_y)
 train_acc = model.score(data_train_x, data_train_y)
 dev_acc = model.score(data_dev_x, data_dev_y)
