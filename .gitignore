@@ -1,3 +1,7 @@
+computed/*.embd
+translations.csv
+models
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
