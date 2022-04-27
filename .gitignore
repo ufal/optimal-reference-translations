@@ -1,5 +1,7 @@
+# added by zouharvi
 computed/*.embd
-translations.csv
+data/*.csv
+data/*.json
 models
 
 # Byte-compiled / optimized / DLL files
