@@ -35,7 +35,9 @@ for uid_i, uid in enumerate(UIDs[:3]):
         new_sent = []
         for i in order:
             new_sent.append(sent[i])
-        new_data.append(new_sent)
+            
+        # source is always first
+        new_data.append([sent[0]] + new_sent)
 
     with open(f"data/translations_{uid}.csv", "w") as f:
         csv.writer(f, quoting=csv.QUOTE_ALL).writerows(new_data)

@@ -1,6 +1,7 @@
 # added by zouharvi
 computed/*.embd
 data/*.csv
+data/*.xlsx
 data/*.json
 models
 
