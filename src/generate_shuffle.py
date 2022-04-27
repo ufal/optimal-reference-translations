@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 
+raise Exception("This script is deprecated. Use `generate_xlsx.py` instead.")
+
 from utils import load_data, load_data_structure, save_json
 import random
 import csv
-
 
 data = load_data_structure()
 
@@ -35,7 +36,7 @@ for uid_i, uid in enumerate(UIDs[:3]):
         new_sent = []
         for i in order:
             new_sent.append(sent[i])
-            
+
         # source is always first
         new_data.append([sent[0]] + new_sent)
 
