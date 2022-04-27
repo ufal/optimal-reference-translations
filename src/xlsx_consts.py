@@ -1,5 +1,6 @@
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import Alignment, Color, PatternFill, Font
+from openpyxl.worksheet.datavalidation import DataValidation
 
 UIDs = [
     "harare", "lusaka", "sahara", "cardiff", "hanoi",
@@ -75,4 +76,11 @@ THICK_BORDER_BOTTOM = Border(
     right=Side(style='thin'),
     top=Side(style='thin'),
     bottom=Side(style='thick')
+)
+
+NUM_VALIDATION = DataValidation(
+    type="decimal",
+    operator="between",
+    formula1=0,
+    formula2=10
 )

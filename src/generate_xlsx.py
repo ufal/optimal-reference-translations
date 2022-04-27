@@ -53,6 +53,7 @@ for uid_i, uid in enumerate(UIDs[:3]):
 
     for doc_k, doc_v in new_data.items():
         sheet = workbook.create_sheet(doc_k)
+        sheet.add_data_validation(NUM_VALIDATION)
 
         for col in "ABCDEFGHIJKLMNOPQR":
             sheet[col + "1"].font = Font(bold=True, name="Calibri")
@@ -61,22 +62,26 @@ for uid_i, uid in enumerate(UIDs[:3]):
         sheet["A1"].value = "Source"
         sheet["A1"].fill = FILL_A_0
         sheet["B1"].value = "Translation 1"
-        sheet["B1"].fill = FILL_B_0
+        for col in "BCDE":
+            sheet[col + "1"].fill = FILL_B_0
         sheet["C1"].value = "T1 Adequacy"
         sheet["D1"].value = "T1 Fluency"
         sheet["E1"].value = "T1 Overall"
         sheet["F1"].value = "Translation 2"
-        sheet["F1"].fill = FILL_F_0
+        for col in "FGHI":
+            sheet[col+"1"].fill = FILL_F_0
         sheet["G1"].value = "T2 Adequacy"
         sheet["H1"].value = "T2 Fluency"
         sheet["I1"].value = "T2 Overall"
         sheet["J1"].value = "Translation 3"
-        sheet["J1"].fill = FILL_J_0
+        for col in "JKLM":
+            sheet[col + "1"].fill = FILL_J_0
         sheet["K1"].value = "T3 Adequacy"
         sheet["L1"].value = "T3 Fluency"
         sheet["M1"].value = "T3 Overall"
         sheet["N1"].value = "Translation 4"
-        sheet["N1"].fill = FILL_N_0
+        for col in "NOPQ":
+            sheet[col +"1"].fill = FILL_N_0
         sheet["O1"].value = "T4 Adequacy"
         sheet["P1"].value = "T4 Fluency"
         sheet["Q1"].value = "T4 Overall"
@@ -86,7 +91,7 @@ for uid_i, uid in enumerate(UIDs[:3]):
             sheet[col + "1"].alignment = Alignment(
                 textRotation=90, horizontal="left"
             )
-            sheet.column_dimensions[col].width = 3
+            sheet.column_dimensions[col].width = 4
         for col in "ABCDEFGHIJKLMNOPQR":
             sheet[col + "1"].border = THICK_BORDER_BOTTOM
 
@@ -117,6 +122,10 @@ for uid_i, uid in enumerate(UIDs[:3]):
                 sheet[col + str(line_i)].border = THIN_BORDER_ALL
             for col in "EIMQ":
                 sheet[col + str(line_i)].border = MEDIUM_BORDER_RIGHT
+
+            # add data validation
+            for col in "CDEGHIKLMOPQ":
+                NUM_VALIDATION.add(col+str(line_i))
 
             sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
 
