@@ -65,6 +65,12 @@ MEDIUM_BORDER_RIGHT = Border(
     top=Side(style='thin'),
     bottom=Side(style='thin')
 )
+MEDIUM_BORDER_ALL = Border(
+    left=Side(style='medium'),
+    right=Side(style='medium'),
+    top=Side(style='medium'),
+    bottom=Side(style='medium')
+)
 THICK_BORDER_RIGHT = Border(
     left=Side(style='thin'),
     right=Side(style='thick'),
@@ -79,8 +85,8 @@ THICK_BORDER_BOTTOM = Border(
 )
 
 NUM_VALIDATION = DataValidation(
-    type="decimal",
+    type="whole",
     operator="between",
     formula1=0,
-    formula2=10
+    formula2=6,
 )
