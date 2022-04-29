@@ -55,6 +55,10 @@ COLS_TRANSLATIONS = {"A"} | {
     ord_to_col(1 + i * (len(ATTRIBUTES) + 1))
     for i in range(4)
 }
+COLS_TRANSLATIONS_TRUE = [
+    ord_to_col(1 + i * (len(ATTRIBUTES) + 1))
+    for i in range(4)
+]
 
 COL_LAST = ord_to_col(1 + (len(ATTRIBUTES) + 1) * 4)
 COLS_ALL = COLS_ATTRIBUTES_FLAT | COLS_TRANSLATIONS | {COL_LAST}
@@ -70,7 +74,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     # header styling
     sheet["A1"].value = "Source"
     sheet["A1"].fill = FILL_0A
-    for i, col in enumerate(COLS_TRANSLATIONS):
+    for i, col in enumerate(COLS_TRANSLATIONS_TRUE):
         i = i + 1
         sheet[f"{col}1"].value = f"Translation {i}"
 
@@ -99,7 +103,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     # fill values
     for line_i, line in enumerate(doc_v):
         line_i += 2
-        for sent_i, (sent, col) in enumerate(zip(line, COLS_TRANSLATIONS)):
+        for sent_i, (sent, col) in enumerate(zip(line, ["A"] + COLS_TRANSLATIONS_TRUE)):
             cell = sheet[col + str(line_i)]
             if col == "A" or (line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]):
                 cell.value = sent
