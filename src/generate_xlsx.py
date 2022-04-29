@@ -97,7 +97,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     for col in COLS_ALL:
         sheet[col + "1"].border = THICK_BORDER_BOTTOM
 
-    sheet.row_dimensions[1].height = 75
+    sheet.row_dimensions[1].height = 85
     sheet.freeze_panes = sheet["B2"]
 
     # fill values

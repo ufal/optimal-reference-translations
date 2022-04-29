@@ -101,5 +101,5 @@ VALIDATION_NONE = defaultdict(lambda: DataValidation(
     errorStyle="stop",
 ))
 
-FONT_BOLD = Font(bold=True, name="Calibri")
-FONT_NORMAL = Font(bold=False, name="Calibri")
+FONT_BOLD = Font(bold=True, name="Arial")
+FONT_NORMAL = Font(bold=False, name="Arial")
