@@ -58,14 +58,11 @@ COLS_TRANSLATIONS = {"A"} | {
 
 COL_LAST = ord_to_col(1 + (len(ATTRIBUTES) + 1) * 4)
 COLS_ALL = COLS_ATTRIBUTES_FLAT | COLS_TRANSLATIONS | {COL_LAST}
-# print(COLS_ATTRIBUTES)
-# exit()
-
 
 def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
-    sheet = workbook.create_sheet("D" + str(doc_i))
-    sheet.add_data_validation(VALIDATION_NUM)
-    sheet.add_data_validation(VALIDATION_NONE)
+    sheet = workbook.create_sheet("Edit" + str(doc_i))
+    sheet.add_data_validation(VALIDATION_NUM[doc_k])
+    sheet.add_data_validation(VALIDATION_NONE[doc_k])
 
     for col in COLS_ALL:
         sheet[col + "1"].font = FONT_BOLD
@@ -90,7 +87,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
     for col in COLS_ATTRIBUTES_FLAT:
         sheet[col + "1"].alignment = Alignment(
-            textRotation=90, horizontal="left"
+            textRotation=90, horizontal="center"
         )
         sheet.column_dimensions[col].width = 2.5
     for col in COLS_ALL:
@@ -128,7 +125,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
         # add data validation
         for col in COLS_ATTRIBUTES_FLAT:
-            VALIDATION_NUM.add(col + str(line_i))
+            VALIDATION_NUM[doc_k].add(col + str(line_i))
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
 
@@ -141,11 +138,11 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
         # prevent users from editing these areas
         for col in COLS_ATTRIBUTES_FLAT:
-            VALIDATION_NONE.add(col + str(line_i + offset))
+            VALIDATION_NONE[doc_k].add(col + str(line_i + offset))
 
         for col in COLS_TRANSLATIONS - {"A"}:
             sheet[col + str(line_i + offset)].border = MEDIUM_BORDER_ALL
-            VALIDATION_NUM.add(col + str(line_i + offset))
+            VALIDATION_NUM[doc_k].add(col + str(line_i + offset))
 
     for col in COLS_TRANSLATIONS:
         sheet.column_dimensions[col].width = 45
@@ -153,7 +150,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
 def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
     sheet = workbook.create_sheet("Orig" + str(doc_i))
-    sheet.add_data_validation(VALIDATION_NONE)
+    sheet.add_data_validation(VALIDATION_NONE[doc_k + "_orig"])
     sheet.protection.sheet = True
 
     for col in "ABCDE":
@@ -186,7 +183,7 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
             if col == "A" or (line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]):
                 cell.value = sent
             cell.alignment = Alignment(wrap_text=True)
-            VALIDATION_NONE.add(col + str(line_i))
+            VALIDATION_NONE[doc_k + "_orig"].add(col + str(line_i))
 
         if line_i % 2 == 0:
             sheet["A" + str(line_i)].fill = FILL_0B
