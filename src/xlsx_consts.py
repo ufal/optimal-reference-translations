@@ -11,43 +11,43 @@ UIDs = [
     "pretoria", "hargeisa", "mogadishu", "honiara", "ljubljana",
     "bratislava", "philipsburg", "singapore", "freetown", "belgrade",
 ]
-FILL_A_0 = PatternFill(
+FILL_0A = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('aaaaaa')
 )
-FILL_A_1 = PatternFill(
+FILL_0B = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('dddddd')
 )
-FILL_B_0 = PatternFill(
+FILL_1A = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('ffc488')
 )
-FILL_B_1 = PatternFill(
+FILL_1B = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('ffe0c1')
 )
-FILL_F_0 = PatternFill(
+FILL_2A = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('ff7382')
 )
-FILL_F_1 = PatternFill(
+FILL_2B = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('ffb5bd')
 )
-FILL_J_0 = PatternFill(
+FILL_3A = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('8574fb')
 )
-FILL_J_1 = PatternFill(
+FILL_3B = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('beb5ff')
 )
-FILL_N_0 = PatternFill(
+FILL_4A = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('3c974b')
 )
-FILL_N_1 = PatternFill(
+FILL_4B = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('729b78')
 )
@@ -84,9 +84,20 @@ THICK_BORDER_BOTTOM = Border(
     bottom=Side(style='thick')
 )
 
-NUM_VALIDATION = DataValidation(
+VALIDATION_NUM = DataValidation(
     type="whole",
     operator="between",
     formula1=0,
     formula2=6,
+    errorStyle="stop",
 )
+VALIDATION_NONE = DataValidation(
+    type="textLength",
+    operator="between",
+    formula1=0,
+    formula2=0,
+    errorStyle="stop",
+)
+
+FONT_BOLD = Font(bold=True, name="Calibri")
+FONT_NORMAL = Font(bold=False, name="Calibri")

@@ -5,7 +5,7 @@ import csv
 from argparse import ArgumentParser
 from pathlib import Path
 from openpyxl import Workbook
-from openpyxl.styles import Alignment, Color, PatternFill, Font
+from openpyxl.styles import Alignment, Color, PatternFill
 import random
 from collections import defaultdict
 from xlsx_consts import *
@@ -15,130 +15,162 @@ args = args.parse_args()
 
 data = load_data_structure()
 
+ATTRIBUTES = [
+    "Spelling", "Terminology", "Grammary",
+    "Meaning", "Style", "Pragmatics", "Overall"
+]
+
+
+def ord_to_col(i):
+    if i < 0:
+        raise Exception(f"Attempted to transform {i} into a column name")
+    if i < 26:
+        return chr(ord("A") + i)
+    if i < 26 * 26:
+        return ord_to_col(i // 26 - 1) + ord_to_col(i % 26)
+    raise Exception(f"Too large a column number {i}")
+
+
+COLS_ATTRIBUTES_ALL = [
+    [
+        ord_to_col(1 + j + (len(ATTRIBUTES) + 1) * i)
+        for j in range(len(ATTRIBUTES) + 1)
+    ]
+    for i in range(4)
+]
+COLS_ATTRIBUTES = [
+    [
+        ord_to_col(2 + j + (len(ATTRIBUTES) + 1) * i)
+        for j in range(len(ATTRIBUTES))
+    ]
+    for i in range(4)
+]
+COLS_ATTRIBUTES_FLAT = {
+    x
+    for y in COLS_ATTRIBUTES
+    for x in y
+}
+
+COLS_TRANSLATIONS = {"A"} | {
+    ord_to_col(1 + i * (len(ATTRIBUTES) + 1))
+    for i in range(4)
+}
+
+COL_LAST = ord_to_col(1 + (len(ATTRIBUTES) + 1) * 4)
+COLS_ALL = COLS_ATTRIBUTES_FLAT | COLS_TRANSLATIONS | {COL_LAST}
+# print(COLS_ATTRIBUTES)
+# exit()
+
 
 def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     sheet = workbook.create_sheet("D" + str(doc_i))
-    sheet.add_data_validation(NUM_VALIDATION)
+    sheet.add_data_validation(VALIDATION_NUM)
+    sheet.add_data_validation(VALIDATION_NONE)
 
-    for col in "ABCDEFGHIJKLMNOPQR":
-        sheet[col + "1"].font = Font(bold=True, name="Calibri")
+    for col in COLS_ALL:
+        sheet[col + "1"].font = FONT_BOLD
 
     # header styling
     sheet["A1"].value = "Source"
-    sheet["A1"].fill = FILL_A_0
-    sheet["B1"].value = "Translation 1"
-    for col in "BCDE":
-        sheet[col + "1"].fill = FILL_B_0
-    sheet["C1"].value = "T1 Adequacy"
-    sheet["D1"].value = "T1 Fluency"
-    sheet["E1"].value = "T1 Overall"
-    sheet["F1"].value = "Translation 2"
-    for col in "FGHI":
-        sheet[col + "1"].fill = FILL_F_0
-    sheet["G1"].value = "T2 Adequacy"
-    sheet["H1"].value = "T2 Fluency"
-    sheet["I1"].value = "T2 Overall"
-    sheet["J1"].value = "Translation 3"
-    for col in "JKLM":
-        sheet[col + "1"].fill = FILL_J_0
-    sheet["K1"].value = "T3 Adequacy"
-    sheet["L1"].value = "T3 Fluency"
-    sheet["M1"].value = "T3 Overall"
-    sheet["N1"].value = "Translation 4"
-    for col in "NOPQ":
-        sheet[col + "1"].fill = FILL_N_0
-    sheet["O1"].value = "T4 Adequacy"
-    sheet["P1"].value = "T4 Fluency"
-    sheet["Q1"].value = "T4 Overall"
-    sheet["R1"].value = "Comments"
+    sheet["A1"].fill = FILL_0A
+    for i, col in enumerate(COLS_TRANSLATIONS):
+        i = i + 1
+        sheet[f"{col}1"].value = f"Translation {i}"
 
-    for col in "CDEGHIKLMOPQ":
+    for cols, style in zip(COLS_ATTRIBUTES_ALL, [FILL_1A, FILL_2A, FILL_3A, FILL_4A]):
+        for col in cols:
+            sheet[col + "1"].fill = style
+
+    for cols_i, cols in enumerate(COLS_ATTRIBUTES):
+        for col, attribute in zip(cols, ATTRIBUTES):
+            sheet[f"{col}1"].value = f"T{cols_i} {attribute}"
+
+    sheet[f"{COL_LAST}1"].value = "Comments"
+    sheet.column_dimensions[COL_LAST].width = 30
+
+    for col in COLS_ATTRIBUTES_FLAT:
         sheet[col + "1"].alignment = Alignment(
             textRotation=90, horizontal="left"
         )
-        sheet.column_dimensions[col].width = 4
-    for col in "ABCDEFGHIJKLMNOPQR":
+        sheet.column_dimensions[col].width = 2.5
+    for col in COLS_ALL:
         sheet[col + "1"].border = THICK_BORDER_BOTTOM
 
-    sheet.row_dimensions[1].height = 65
+    sheet.row_dimensions[1].height = 75
     sheet.freeze_panes = sheet["B2"]
 
     # fill values
     for line_i, line in enumerate(doc_v):
         line_i += 2
-        for sent_i, (sent, col) in enumerate(zip(line, "ABFJNR")):
+        for sent_i, (sent, col) in enumerate(zip(line, COLS_TRANSLATIONS)):
             cell = sheet[col + str(line_i)]
-            if col == "A" or (line_i -1 >= DOC_SPANS[doc_k][0] and line_i -1 <= DOC_SPANS[doc_k][1]):
+            if col == "A" or (line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]):
                 cell.value = sent
             cell.alignment = Alignment(wrap_text=True)
 
         if line_i % 2 == 0:
-            sheet["A" + str(line_i)].fill = FILL_A_1
-            for col in "BCDE":
-                sheet[col + str(line_i)].fill = FILL_B_1
-            for col in "FGHI":
-                sheet[col + str(line_i)].fill = FILL_F_1
-            for col in "JKLM":
-                sheet[col + str(line_i)].fill = FILL_J_1
-            for col in "NOPQ":
-                sheet[col + str(line_i)].fill = FILL_N_1
+            sheet["A" + str(line_i)].fill = FILL_0B
+            for col in COLS_ATTRIBUTES_ALL[0]:
+                sheet[col + str(line_i)].fill = FILL_1B
+            for col in COLS_ATTRIBUTES_ALL[1]:
+                sheet[col + str(line_i)].fill = FILL_2B
+            for col in COLS_ATTRIBUTES_ALL[2]:
+                sheet[col + str(line_i)].fill = FILL_3B
+            for col in COLS_ATTRIBUTES_ALL[3]:
+                sheet[col + str(line_i)].fill = FILL_4B
 
         # set borders
-        for col in "BCDFGHJKLNOPR":
+        for col in COLS_ATTRIBUTES_FLAT | COLS_TRANSLATIONS:
             sheet[col + str(line_i)].border = THIN_BORDER_ALL
-        for col in "EIMQ":
-            sheet[col + str(line_i)].border = MEDIUM_BORDER_RIGHT
+            sheet[col + str(line_i)].font = FONT_NORMAL
+        for cols in COLS_ATTRIBUTES_ALL:
+            sheet[cols[-1] + str(line_i)].border = MEDIUM_BORDER_RIGHT
 
         # add data validation
-        for col in "CDEGHIKLMOPQ":
-            NUM_VALIDATION.add(col + str(line_i))
+        for col in COLS_ATTRIBUTES_FLAT:
+            VALIDATION_NUM.add(col + str(line_i))
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
 
         sheet.row_dimensions[line_i].height = 70
 
-    line_i += 1
-    sheet["A" + str(line_i+1)].value = "Document fluency"
-    sheet["A" + str(line_i+2)].value = "Document adequacy"
-    sheet["A" + str(line_i+3)].value = "Document overall"
-    sheet["A" + str(line_i+1)].font = Font(bold=True, name="Calibri")
-    sheet["A" + str(line_i+2)].font = Font(bold=True, name="Calibri")
-    sheet["A" + str(line_i+3)].font = Font(bold=True, name="Calibri")
+    line_i += 2
+    for offset, attribute in enumerate(ATTRIBUTES):
+        sheet["A" + str(line_i + offset)].font = FONT_BOLD
+        sheet["A" + str(line_i + offset)].value = f"Document {attribute}"
 
-    for col in "BFJN":
-        sheet[col + str(line_i+1)].border = MEDIUM_BORDER_ALL
-        sheet[col + str(line_i+2)].border = MEDIUM_BORDER_ALL
-        sheet[col + str(line_i+3)].border = MEDIUM_BORDER_ALL
-        sheet[col + str(line_i+1)].border
-        sheet[col + str(line_i+2)].border
-        sheet[col + str(line_i+3)].border
-        NUM_VALIDATION.add(col + str(line_i + 1))
-        NUM_VALIDATION.add(col + str(line_i + 2))
-        NUM_VALIDATION.add(col + str(line_i + 3))
+        # prevent users from editing these areas
+        for col in COLS_ATTRIBUTES_FLAT:
+            VALIDATION_NONE.add(col + str(line_i + offset))
 
+        for col in COLS_TRANSLATIONS - {"A"}:
+            sheet[col + str(line_i + offset)].border = MEDIUM_BORDER_ALL
+            VALIDATION_NUM.add(col + str(line_i + offset))
 
-    for col in "ABFJNR":
-        sheet.column_dimensions[col].width = 60
+    for col in COLS_TRANSLATIONS:
+        sheet.column_dimensions[col].width = 45
 
 
 def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
-    sheet = workbook.create_sheet("D" + str(doc_i) + "org")
+    sheet = workbook.create_sheet("Orig" + str(doc_i))
+    sheet.add_data_validation(VALIDATION_NONE)
     sheet.protection.sheet = True
 
-    for col in "ABCDEFGHIJKLMNOPQR":
-        sheet[col + "1"].font = Font(bold=True, name="Calibri")
+    for col in "ABCDE":
+        sheet[col + "1"].font = FONT_BOLD
 
     # header styling
+    # TODO
     sheet["A1"].value = "Source"
-    sheet["A1"].fill = FILL_A_0
+    sheet["A1"].fill = FILL_0A
     sheet["B1"].value = "Translation 1"
-    sheet["B1"].fill = FILL_B_0
+    sheet["B1"].fill = FILL_1A
     sheet["C1"].value = "Translation 2"
-    sheet["C1"].fill = FILL_F_0
+    sheet["C1"].fill = FILL_2A
     sheet["D1"].value = "Translation 3"
-    sheet["D1"].fill = FILL_J_0
+    sheet["D1"].fill = FILL_3A
     sheet["E1"].value = "Translation 4"
-    sheet["E1"].fill = FILL_N_0
+    sheet["E1"].fill = FILL_4A
 
     for col in "ABCDE":
         sheet[col + "1"].border = THICK_BORDER_BOTTOM
@@ -151,16 +183,17 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
         line_i += 2
         for sent_i, (sent, col) in enumerate(zip(line, "ABCDE")):
             cell = sheet[col + str(line_i)]
-            if col == "A" or (line_i -1 >= DOC_SPANS[doc_k][0] and line_i -1 <= DOC_SPANS[doc_k][1]):
+            if col == "A" or (line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]):
                 cell.value = sent
             cell.alignment = Alignment(wrap_text=True)
+            VALIDATION_NONE.add(col + str(line_i))
 
         if line_i % 2 == 0:
-            sheet["A" + str(line_i)].fill = FILL_A_1
-            sheet["B" + str(line_i)].fill = FILL_B_1
-            sheet["C" + str(line_i)].fill = FILL_F_1
-            sheet["D" + str(line_i)].fill = FILL_J_1
-            sheet["E" + str(line_i)].fill = FILL_N_1
+            sheet["A" + str(line_i)].fill = FILL_0B
+            sheet["B" + str(line_i)].fill = FILL_1B
+            sheet["C" + str(line_i)].fill = FILL_2B
+            sheet["D" + str(line_i)].fill = FILL_3B
+            sheet["E" + str(line_i)].fill = FILL_4B
 
         # set borders
         for col in "BCDE":
@@ -170,7 +203,8 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
         sheet.row_dimensions[line_i].height = 70
 
     for col in "ABCDE":
-        sheet.column_dimensions[col].width = 60
+        sheet.column_dimensions[col].width = 45
+
 
 # sanitize keys
 data = {
