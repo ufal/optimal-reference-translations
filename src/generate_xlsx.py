@@ -13,8 +13,6 @@ from xlsx_consts import *
 args = ArgumentParser()
 args = args.parse_args()
 
-data = load_data_structure()
-
 ATTRIBUTES = [
     "Spelling", "Terminology", "Grammary",
     "Meaning", "Style", "Pragmatics", "Overall"
@@ -29,6 +27,17 @@ def ord_to_col(i):
     if i < 26 * 26:
         return ord_to_col(i // 26 - 1) + ord_to_col(i % 26)
     raise Exception(f"Too large a column number {i}")
+
+
+def get_height_for_row(sheet, row_number):
+    row = list(sheet.rows)[row_number - 1]
+    return max(
+        40,
+        max([
+            len(cell.value) / 2.7 if cell.value is not None else 0
+            for cell in row
+        ])
+    )
 
 
 COLS_ATTRIBUTES_ALL = [
@@ -63,6 +72,7 @@ COLS_TRANSLATIONS_TRUE = [
 COL_LAST = ord_to_col(1 + (len(ATTRIBUTES) + 1) * 4)
 COLS_ALL = COLS_ATTRIBUTES_FLAT | COLS_TRANSLATIONS | {COL_LAST}
 
+
 def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     sheet = workbook.create_sheet("Edit" + str(doc_i))
     sheet.add_data_validation(VALIDATION_NUM[doc_k])
@@ -93,7 +103,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
         sheet[col + "1"].alignment = Alignment(
             textRotation=90, horizontal="center"
         )
-        sheet.column_dimensions[col].width = 2.5
+        sheet.column_dimensions[col].width = 3
     for col in COLS_ALL:
         sheet[col + "1"].border = THICK_BORDER_BOTTOM
 
@@ -129,24 +139,38 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
         # add data validation
         for col in COLS_ATTRIBUTES_FLAT:
+            sheet[col + str(line_i)].alignment = Alignment(
+                textRotation=90, horizontal="center"
+            )
             VALIDATION_NUM[doc_k].add(col + str(line_i))
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
 
-        sheet.row_dimensions[line_i].height = 70
+        sheet.row_dimensions[line_i].height = get_height_for_row(sheet, line_i)
 
     line_i += 2
-    for offset, attribute in enumerate(ATTRIBUTES):
-        sheet["A" + str(line_i + offset)].font = FONT_BOLD
-        sheet["A" + str(line_i + offset)].value = f"Document {attribute}"
+    sheet["A" + str(line_i)].value = f"Document rating"
+    sheet.row_dimensions[line_i].height = 40
 
-        # prevent users from editing these areas
-        for col in COLS_ATTRIBUTES_FLAT:
-            VALIDATION_NONE[doc_k].add(col + str(line_i + offset))
+    for col in COLS_ATTRIBUTES_FLAT:
+        VALIDATION_NONE[doc_k].add(col + str(line_i - 1))
+        VALIDATION_NONE[doc_k].add(col + str(line_i + 1))
 
-        for col in COLS_TRANSLATIONS - {"A"}:
-            sheet[col + str(line_i + offset)].border = MEDIUM_BORDER_ALL
-            VALIDATION_NUM[doc_k].add(col + str(line_i + offset))
+    for col in COLS_TRANSLATIONS - {"A"}:
+        VALIDATION_NONE[doc_k].add(col + str(line_i))
+        VALIDATION_NONE[doc_k].add(col + str(line_i-1))
+        VALIDATION_NONE[doc_k].add(col + str(line_i+1))
+
+    sheet["A" + str(line_i)].border = MEDIUM_BORDER_ALL
+    sheet["A" + str(line_i)].font = FONT_BOLD
+
+    for col in COLS_ATTRIBUTES_FLAT:
+        sheet[col + str(line_i)].border = MEDIUM_BORDER_ALL
+        VALIDATION_NUM[doc_k].add(col + str(line_i))
+        sheet[col + str(line_i)].alignment = Alignment(
+            textRotation=90,
+            horizontal="center"
+        )
 
     for col in COLS_TRANSLATIONS:
         sheet.column_dimensions[col].width = 45
@@ -207,6 +231,26 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
         sheet.column_dimensions[col].width = 45
 
 
+DOC_SPANS = {
+    'latimes.431856': (2, 9),
+    'metro.co.uk.12069': (1, 8),
+    'en.ndtv.com.13152': (3, 10),
+    'guardian.260810': (2, 9),
+    'rt.com.113909': (1, 8),
+    'rt.com.113881': (1, 8),
+    'cnn.385674.txt': (1, 8),
+    'huffingtonpost.com.19347': (4, 11),
+    'brisbanetimes.com.au.225989': (1, 8),
+    'express.co.uk.11102': (3, 10),
+    'brisbanetimes.com.au.225990': (4, 11),
+    'reuters.276709': (3, 10),
+    'cbsnews.302129': (2, 9),
+    'independent.281139': (4, 11),
+    'en.ndtv.com.13143': (2, 9),
+}
+
+data = load_data_structure()
+
 # sanitize keys
 data = {
     k.strip(): v for k, v in data.items()
@@ -214,16 +258,7 @@ data = {
 
 data = {
     k: v for k, v in data.items()
-    if k in {
-        'upi.205735', 'upi.205660', 'en.ndtv.com.13152', 'independent.281139',
-    }
-}
-
-DOC_SPANS = {
-    'upi.205735': (3, 11),
-    'upi.205660': (1, 8),
-    'en.ndtv.com.13152': (3, 11),
-    'independent.281139': (3, 11),
+    if k in DOC_SPANS.keys()
 }
 
 for uid_i, uid in enumerate(UIDs[:3]):

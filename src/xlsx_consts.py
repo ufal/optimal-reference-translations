@@ -86,7 +86,7 @@ THICK_BORDER_BOTTOM = Border(
 )
 
 VALIDATION_NUM = defaultdict(lambda: DataValidation(
-    type="whole",
+    type="decimal",
     operator="between",
     formula1=0,
     formula2=6,
