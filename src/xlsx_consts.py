@@ -1,6 +1,7 @@
 from openpyxl.styles.borders import Border, Side
 from openpyxl.styles import Alignment, Color, PatternFill, Font
 from openpyxl.worksheet.datavalidation import DataValidation
+from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from collections import defaultdict
 
 UIDs = [
@@ -26,23 +27,23 @@ FILL_1A = PatternFill(
 )
 FILL_1B = PatternFill(
     patternType='solid',
-    fill_type='solid', fgColor=Color('ffe0c1')
+    fill_type='solid', fgColor=Color('fceee0')
 )
 FILL_2A = PatternFill(
     patternType='solid',
-    fill_type='solid', fgColor=Color('ff7382')
+    fill_type='solid', fgColor=Color('8574fb')
 )
 FILL_2B = PatternFill(
     patternType='solid',
-    fill_type='solid', fgColor=Color('ffb5bd')
+    fill_type='solid', fgColor=Color('eae8fc')
 )
 FILL_3A = PatternFill(
     patternType='solid',
-    fill_type='solid', fgColor=Color('8574fb')
+    fill_type='solid', fgColor=Color('e9ff6d')
 )
 FILL_3B = PatternFill(
     patternType='solid',
-    fill_type='solid', fgColor=Color('beb5ff')
+    fill_type='solid', fgColor=Color('fcfcdb')
 )
 FILL_4A = PatternFill(
     patternType='solid',
@@ -50,7 +51,11 @@ FILL_4A = PatternFill(
 )
 FILL_4B = PatternFill(
     patternType='solid',
-    fill_type='solid', fgColor=Color('729b78')
+    fill_type='solid', fgColor=Color('cbf2d1')
+)
+FILL_BLANK = PatternFill(
+    patternType="solid",
+    fill_type='solid', fgColor=Color('eda1a1')
 )
 
 
@@ -103,3 +108,5 @@ VALIDATION_NONE = defaultdict(lambda: DataValidation(
 
 FONT_BOLD = Font(bold=True, name="Arial")
 FONT_NORMAL = Font(bold=False, name="Arial")
+
+FORMATTING_BLANK = lambda cell: FormulaRule(formula=[f'ISBLANK({cell})'], stopIfTrue=True, fill=FILL_BLANK)

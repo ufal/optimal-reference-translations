@@ -142,6 +142,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
             sheet[col + str(line_i)].alignment = Alignment(
                 textRotation=90, horizontal="center"
             )
+            sheet.conditional_formatting.add(col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
             VALIDATION_NUM[doc_k].add(col + str(line_i))
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
@@ -163,10 +164,12 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
     sheet["A" + str(line_i)].border = MEDIUM_BORDER_ALL
     sheet["A" + str(line_i)].font = FONT_BOLD
+    sheet["A" + str(line_i)].fill = FILL_0A
 
     for col in COLS_ATTRIBUTES_FLAT:
         sheet[col + str(line_i)].border = MEDIUM_BORDER_ALL
         VALIDATION_NUM[doc_k].add(col + str(line_i))
+        sheet.conditional_formatting.add(col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
         sheet[col + str(line_i)].alignment = Alignment(
             textRotation=90,
             horizontal="center"
@@ -174,6 +177,15 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
     for col in COLS_TRANSLATIONS:
         sheet.column_dimensions[col].width = 45
+        sheet[col + str(line_i)].border = THIN_BORDER_ALL
+        for col in COLS_ATTRIBUTES_ALL[0]:
+            sheet[col + str(line_i)].fill = FILL_1B
+        for col in COLS_ATTRIBUTES_ALL[1]:
+            sheet[col + str(line_i)].fill = FILL_2B
+        for col in COLS_ATTRIBUTES_ALL[2]:
+            sheet[col + str(line_i)].fill = FILL_3B
+        for col in COLS_ATTRIBUTES_ALL[3]:
+            sheet[col + str(line_i)].fill = FILL_4B
 
 
 def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
@@ -212,6 +224,7 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
                 cell.value = sent
             cell.alignment = Alignment(wrap_text=True)
             VALIDATION_NONE[doc_k + "_orig"].add(col + str(line_i))
+            sheet[col + str(line_i)].font = FONT_NORMAL
 
         if line_i % 2 == 0:
             sheet["A" + str(line_i)].fill = FILL_0B
@@ -225,7 +238,7 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
             sheet[col + str(line_i)].border = MEDIUM_BORDER_RIGHT
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
-        sheet.row_dimensions[line_i].height = 70
+        sheet.row_dimensions[line_i].height = get_height_for_row(sheet, line_i)
 
     for col in "ABCDE":
         sheet.column_dimensions[col].width = 45
@@ -261,7 +274,7 @@ data = {
     if k in DOC_SPANS.keys()
 }
 
-for uid_i, uid in enumerate(UIDs[:3]):
+for uid_i, uid in enumerate(UIDs[:2]):
     random.seed(uid_i)
     new_data = {}
 
