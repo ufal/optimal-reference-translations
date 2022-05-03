@@ -14,7 +14,7 @@ args = ArgumentParser()
 args = args.parse_args()
 
 ATTRIBUTES = [
-    "Spelling", "Terminology", "Grammary",
+    "Spelling", "Terminology", "Grammar",
     "Meaning", "Style", "Pragmatics", "Overall"
 ]
 
@@ -117,6 +117,14 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
             cell = sheet[col + str(line_i)]
             if col == "A" or (line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]):
                 cell.value = sent
+            
+            for col in COLS_ATTRIBUTES_FLAT:
+                if line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]:
+                    sheet.conditional_formatting.add(col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
+                    VALIDATION_NUM[doc_k].add(col + str(line_i))
+                else:
+                    VALIDATION_NONE[doc_k].add(col + str(line_i))
+
             cell.alignment = Alignment(wrap_text=True)
 
         if line_i % 2 == 0:
@@ -142,8 +150,6 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
             sheet[col + str(line_i)].alignment = Alignment(
                 textRotation=90, horizontal="center"
             )
-            sheet.conditional_formatting.add(col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
-            VALIDATION_NUM[doc_k].add(col + str(line_i))
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
 
@@ -274,7 +280,7 @@ data = {
     if k in DOC_SPANS.keys()
 }
 
-for uid_i, uid in enumerate(UIDs[:2]):
+for uid_i, uid in enumerate(UIDs[:5]):
     random.seed(uid_i)
     new_data = {}
 
@@ -286,7 +292,8 @@ for uid_i, uid in enumerate(UIDs[:2]):
         "systems": {}, "docs": keys
     }
 
-    for doc_k, doc_v in data.items():
+    for doc_k in keys:
+        doc_v = data[doc_k]
         new_data[doc_k] = []
 
         # shuffle separatedly for each doc
