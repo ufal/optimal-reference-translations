@@ -138,10 +138,14 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
             for col in COLS_ATTRIBUTES_ALL[3]:
                 sheet[col + str(line_i)].fill = FILL_4B
 
-        # set borders
+        # set borders & alignment
         for col in COLS_ATTRIBUTES_FLAT | COLS_TRANSLATIONS:
             sheet[col + str(line_i)].border = THIN_BORDER_ALL
             sheet[col + str(line_i)].font = FONT_NORMAL
+        for col in COLS_TRANSLATIONS:
+            sheet[col + str(line_i)].alignment = Alignment(
+                vertical="top", horizontal="justify"
+            )
         for cols in COLS_ATTRIBUTES_ALL:
             sheet[cols[-1] + str(line_i)].border = MEDIUM_BORDER_RIGHT
 
