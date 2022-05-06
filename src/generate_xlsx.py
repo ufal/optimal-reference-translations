@@ -161,16 +161,15 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
     line_i += 2
     sheet["A" + str(line_i)].value = f"Document rating"
+    sheet["A" + str(line_i+1)].value = f"Document time (minutes)"
+    sheet.conditional_formatting.add("B" + str(line_i+1), FORMATTING_BLANK(col + str(line_i+1)))
+    sheet["B" + str(line_i+1)].border = MEDIUM_BORDER_ALL
+    sheet["A" + str(line_i+1)].fill = FILL_0A
+    sheet["A" + str(line_i+1)].font = FONT_BOLD
     sheet.row_dimensions[line_i].height = 40
-
-    for col in COLS_ATTRIBUTES_FLAT:
-        VALIDATION_NONE[doc_k].add(col + str(line_i - 1))
-        VALIDATION_NONE[doc_k].add(col + str(line_i + 1))
 
     for col in COLS_TRANSLATIONS - {"A"}:
         VALIDATION_NONE[doc_k].add(col + str(line_i))
-        VALIDATION_NONE[doc_k].add(col + str(line_i-1))
-        VALIDATION_NONE[doc_k].add(col + str(line_i+1))
 
     sheet["A" + str(line_i)].border = MEDIUM_BORDER_ALL
     sheet["A" + str(line_i)].font = FONT_BOLD
@@ -255,21 +254,28 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
 
 
 DOC_SPANS = {
-    'latimes.431856': (2, 9),
-    'metro.co.uk.12069': (1, 8),
-    'en.ndtv.com.13152': (3, 10),
-    'guardian.260810': (2, 9),
-    'rt.com.113909': (1, 8),
-    'rt.com.113881': (1, 8),
-    'cnn.385674.txt': (1, 8),
-    'huffingtonpost.com.19347': (4, 11),
-    'brisbanetimes.com.au.225989': (1, 8),
-    'express.co.uk.11102': (3, 10),
-    'brisbanetimes.com.au.225990': (4, 11),
-    'reuters.276709': (3, 10),
-    'cbsnews.302129': (2, 9),
-    'independent.281139': (4, 11),
-    'en.ndtv.com.13143': (2, 9),
+    'latimes.431856': (1, 8),
+    # 'metro.co.uk.12069': (6, 13),
+    # 'en.ndtv.com.13152': (3, 10),
+    # 'guardian.260810': (2, 9),
+    # 'rt.com.113909': (1, 8),
+    # 'rt.com.113881': (3, 10),
+    # 'cnn.385674.txt': (1, 8),
+    # 'huffingtonpost.com.19347': (3, 10),
+    # 'brisbanetimes.com.au.225989': (1, 8),
+    # 'express.co.uk.11102': (5, 12),
+    # 'brisbanetimes.com.au.225990': (4, 11),
+    # 'reuters.276709': (4, 11),
+    # 'cbsnews.302129': (3, 10),
+    # 'independent.281139': (1, 8),
+    # 'en.ndtv.com.13143': (3, 10),
+    # 'huffingtonpost.com.19376': (1, 8),
+    # 'cbsnews.302172': (1, 8),
+    # 'huffingtonpost.com.19371.txt': (1, 8),
+    # 'huffingtonpost.com.19385': (1, 8),
+    # 'foxnews.100073': (1, 8),;
+    # 'foxnews.100074': (1, 8),
+    # 'scotsman.155294': (1, 8),
 }
 
 data = load_data_structure()
@@ -284,7 +290,7 @@ data = {
     if k in DOC_SPANS.keys()
 }
 
-for uid_i, uid in enumerate(UIDs[:5]):
+for uid_i, uid in enumerate(UIDs[:1]):
     random.seed(uid_i)
     new_data = {}
 

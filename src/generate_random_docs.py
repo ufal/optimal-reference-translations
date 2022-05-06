@@ -12,10 +12,11 @@ args = args.parse_args()
 random.seed(args.seed)
 
 data = [(k,v) for k,v in load_data_structure().items() if len(v) >= 10 and len(v) <= 15]
+print(len(data), "available")
 
-data = random.sample(data, k=15)
+data = random.sample(data, k=22)
 
-print(len(data))
+print(len(data), "selected")
 print()
 
 print("DOC_SPANS = {")

@@ -4,8 +4,10 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from collections import defaultdict
 
+# "lusaka",
+# "harare",
 UIDs = [
-    "harare", "lusaka", "sahara", "cardiff", "hanoi",
+    "sahara", "cardiff", "hanoi",
     "caracas", "montevideo", "washington", "kampala", "funafuti",
     "ashgabat", "ankara", "tiraspol", "lome", "bangkok",
     "dodoma", "dushanbe", "damascus", "bern", "stockholm",
