@@ -144,7 +144,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
             sheet[col + str(line_i)].font = FONT_NORMAL
         for col in COLS_TRANSLATIONS:
             sheet[col + str(line_i)].alignment = Alignment(
-                vertical="top", horizontal="justify"
+                vertical="top", horizontal="justify", wrapText=True,
             )
         for cols in COLS_ATTRIBUTES_ALL:
             sheet[cols[-1] + str(line_i)].border = MEDIUM_BORDER_RIGHT
@@ -242,9 +242,13 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
             sheet["D" + str(line_i)].fill = FILL_3B
             sheet["E" + str(line_i)].fill = FILL_4B
 
-        # set borders
+        # set borders & alignments
         for col in "BCDE":
             sheet[col + str(line_i)].border = MEDIUM_BORDER_RIGHT
+        for col in COLS_TRANSLATIONS:
+            sheet[col + str(line_i)].alignment = Alignment(
+                vertical="top", horizontal="justify", wrapText=True,
+            )
 
         sheet["A" + str(line_i)].border = THICK_BORDER_RIGHT
         sheet.row_dimensions[line_i].height = get_height_for_row(sheet, line_i)
@@ -255,27 +259,27 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
 
 DOC_SPANS = {
     'latimes.431856': (1, 8),
-    # 'metro.co.uk.12069': (6, 13),
-    # 'en.ndtv.com.13152': (3, 10),
-    # 'guardian.260810': (2, 9),
-    # 'rt.com.113909': (1, 8),
-    # 'rt.com.113881': (3, 10),
-    # 'cnn.385674.txt': (1, 8),
-    # 'huffingtonpost.com.19347': (3, 10),
-    # 'brisbanetimes.com.au.225989': (1, 8),
-    # 'express.co.uk.11102': (5, 12),
-    # 'brisbanetimes.com.au.225990': (4, 11),
-    # 'reuters.276709': (4, 11),
-    # 'cbsnews.302129': (3, 10),
-    # 'independent.281139': (1, 8),
-    # 'en.ndtv.com.13143': (3, 10),
-    # 'huffingtonpost.com.19376': (1, 8),
-    # 'cbsnews.302172': (1, 8),
-    # 'huffingtonpost.com.19371.txt': (1, 8),
-    # 'huffingtonpost.com.19385': (1, 8),
-    # 'foxnews.100073': (1, 8),;
-    # 'foxnews.100074': (1, 8),
-    # 'scotsman.155294': (1, 8),
+    'metro.co.uk.12069': (6, 13),
+    'en.ndtv.com.13152': (3, 10),
+    'guardian.260810': (2, 9),
+    'rt.com.113909': (1, 8),
+    'rt.com.113881': (3, 10),
+    'cnn.385674.txt': (1, 8),
+    'huffingtonpost.com.19347': (3, 10),
+    'brisbanetimes.com.au.225989': (1, 8),
+    'express.co.uk.11102': (5, 12),
+    'brisbanetimes.com.au.225990': (4, 11),
+    'reuters.276709': (4, 11),
+    'cbsnews.302129': (3, 10),
+    'independent.281139': (1, 8),
+    'en.ndtv.com.13143': (3, 10),
+    'huffingtonpost.com.19376': (1, 8),
+    'cbsnews.302172': (1, 8),
+    'huffingtonpost.com.19371.txt': (1, 8),
+    'huffingtonpost.com.19385': (1, 8),
+    'foxnews.100073': (1, 8),
+    'foxnews.100074': (1, 8),
+    'scotsman.155294': (1, 8),
 }
 
 data = load_data_structure()
@@ -290,7 +294,7 @@ data = {
     if k in DOC_SPANS.keys()
 }
 
-for uid_i, uid in enumerate(UIDs[:1]):
+for uid_i, uid in enumerate(UIDs[:20]):
     random.seed(uid_i)
     new_data = {}
 
