@@ -162,7 +162,7 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     line_i += 2
     sheet["A" + str(line_i)].value = f"Document rating"
     sheet["A" + str(line_i+1)].value = f"Document time (minutes)"
-    sheet.conditional_formatting.add("B" + str(line_i+1), FORMATTING_BLANK(col + str(line_i+1)))
+    sheet.conditional_formatting.add("B" + str(line_i+1), FORMATTING_BLANK("B" + str(line_i+1)))
     sheet["B" + str(line_i+1)].border = MEDIUM_BORDER_ALL
     sheet["A" + str(line_i+1)].fill = FILL_0A
     sheet["A" + str(line_i+1)].font = FONT_BOLD
