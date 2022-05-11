@@ -1,8 +1,8 @@
 # added by zouharvi
 computed/*.embd
-data/*.csv
-data/*.xlsx
-data/*.json
+data/**/*.csv
+data/**/*.xlsx
+data/**/*.json
 models
 
 # Byte-compiled / optimized / DLL files
