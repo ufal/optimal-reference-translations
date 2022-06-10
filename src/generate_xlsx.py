@@ -259,7 +259,7 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
 
 DOC_SPANS = {
     'latimes.431856': (1, 8),
-    'metro.co.uk.12069': (6, 13),
+    'metro.co.uk.12069': (6, 13), # removed
     'en.ndtv.com.13152': (3, 10),
     'guardian.260810': (2, 9),
     'rt.com.113909': (1, 8),
@@ -271,7 +271,7 @@ DOC_SPANS = {
     'brisbanetimes.com.au.225990': (4, 11),
     'reuters.276709': (4, 11),
     'cbsnews.302129': (3, 10),
-    'independent.281139': (1, 8),
+    'independent.281139': (1, 8), # removed
     'en.ndtv.com.13143': (3, 10),
     'huffingtonpost.com.19376': (1, 8),
     'cbsnews.302172': (1, 8),
@@ -300,7 +300,8 @@ for uid_i, uid in enumerate(UIDs[:20]):
 
     keys = list(data.keys())
     random.shuffle(keys)
-    print(len(data.keys()), [len(data[k]) for k in keys])
+
+    print(f"{uid+':':<12}", len(keys), [len(data[k]) for k in keys])
 
     mapping = {
         "systems": {}, "docs": keys
@@ -308,11 +309,17 @@ for uid_i, uid in enumerate(UIDs[:20]):
 
     for doc_k in keys:
         doc_v = data[doc_k]
-        new_data[doc_k] = []
 
         # shuffle separatedly for each doc
         order = [1, 2, 3, 4]
         random.shuffle(order)
+
+        # for backward compatibility & randomness stability we can't change the size of an array to be shuffled
+        # the reason it's down here is because the above shuffle is the last direct use of random
+        if doc_k in {"metro.co.uk.12069", "independent.281139"}:
+            continue
+
+        new_data[doc_k] = []
         mapping["systems"][doc_k] = order
 
         for sent in doc_v:
@@ -323,8 +330,12 @@ for uid_i, uid in enumerate(UIDs[:20]):
             # source is always first
             new_data[doc_k].append([sent[0]] + new_sent)
 
+    # handle also the associated meta file
+    mapping["docs"].remove("metro.co.uk.12069")
+    mapping["docs"].remove("independent.281139")
+
     # save mapping
-    save_json(f"data/mapping_{uid}.json", mapping)
+    save_json(f"data/empty/mapping_{uid}.json", mapping)
 
     # generate XLSX document
     workbook = Workbook()
@@ -336,4 +347,4 @@ for uid_i, uid in enumerate(UIDs[:20]):
         add_edit_sheet(workbook, doc_i, doc_k, doc_v)
         add_locked_sheet(workbook, doc_i, doc_k, doc_v)
 
-    workbook.save(f"data/translations_{uid}.xlsx")
+    workbook.save(f"data/empty/translations_{uid}.xlsx")
