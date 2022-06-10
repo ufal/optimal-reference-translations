@@ -335,7 +335,7 @@ for uid_i, uid in enumerate(UIDs[:20]):
     mapping["docs"].remove("independent.281139")
 
     # save mapping
-    save_json(f"data/mapping_{uid}.json", mapping)
+    save_json(f"data/empty/mapping_{uid}.json", mapping)
 
     # generate XLSX document
     workbook = Workbook()
@@ -347,4 +347,4 @@ for uid_i, uid in enumerate(UIDs[:20]):
         add_edit_sheet(workbook, doc_i, doc_k, doc_v)
         add_locked_sheet(workbook, doc_i, doc_k, doc_v)
 
-    workbook.save(f"data/translations_{uid}.xlsx")
+    workbook.save(f"data/empty/translations_{uid}.xlsx")
