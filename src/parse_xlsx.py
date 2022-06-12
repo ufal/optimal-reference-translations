@@ -3,9 +3,15 @@
 from utils import save_json, read_json
 from openpyxl import Workbook, load_workbook
 import json
+from pathlib import Path
 
 # override
-UIDs = ["sahara", "cardiff", "washington", "kampala", "hanoi"]
+UIDs = [
+    "sahara", "cardiff", "hanoi",
+    "caracas", "montevideo", "washington", "kampala", "funafuti",
+    "ashgabat", "ankara", "tiraspol", "lome", "bangkok",
+    "dodoma", "dushanbe", "damascus", "bern", "stockholm",
+]
 DATA = []
 
 COL_ORIG = ["B", "C", "D", "E"]
@@ -22,8 +28,11 @@ ATTRIBUTES = [
 ]
 
 for uid in UIDs:
+    if not Path(f"data/done/translations_{uid}.xlsx").is_file():
+        continue
     mapping = read_json(f"data/mapping/mapping_{uid}.json")
     wb = load_workbook(f"data/done/translations_{uid}.xlsx")
+    print(uid)
 
     for i in range(20):
         doc = mapping["docs"][i]

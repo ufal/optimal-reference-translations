@@ -5,7 +5,7 @@ from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from collections import defaultdict
 
 # "harare",
-    # "lusaka",
+# "lusaka",
 UIDs = [
     "sahara", "cardiff", "hanoi",
     "caracas", "montevideo", "washington", "kampala", "funafuti",
