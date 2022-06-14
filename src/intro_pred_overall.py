@@ -56,6 +56,12 @@ hits_025 = [
     for y_pred, y
     in zip(ys_pred, ys_test)
 ]
+hits_abs = [
+    np.abs(y_pred- y)
+    for y_pred, y
+    in zip(ys_pred, ys_test)
+]
 print(f"Hits (1.0 tolerance):  {np.average(hits_100):.1%}")
 print(f"Hits (0.5 tolerance):  {np.average(hits_050):.1%}")
 print(f"Hits (0.25 tolerance): {np.average(hits_025):.1%}")
+print(f"Hits (0.25 tolerance): {np.average(hits_abs):.2f}")
