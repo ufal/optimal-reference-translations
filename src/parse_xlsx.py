@@ -4,6 +4,7 @@ from utils import save_json, read_json
 from openpyxl import Workbook, load_workbook
 import json
 from pathlib import Path
+import numpy as np
 
 # override
 UIDs = [
@@ -27,12 +28,24 @@ ATTRIBUTES = [
     "meaning", "style", "pragmatics", "overall"
 ]
 
+def parse_time(val):
+    if val is None:
+        return None
+    elif type(val) == float:
+        return val
+    elif type(val) == str:
+        return float("".join([x for x in val if x.isdigit()]))
+    else:
+        raise Exception("Unable to parse", val, "as time")
+
+print(f"{'UID':<13} | {'docs':>4} | {'avg. time':>10} |")
 for uid in UIDs:
     if not Path(f"data/done/translations_{uid}.xlsx").is_file():
         continue
     mapping = read_json(f"data/mapping/mapping_{uid}.json")
     wb = load_workbook(f"data/done/translations_{uid}.xlsx")
-    print(uid)
+    docs_skipped = []
+    docs_time = []
 
     for i in range(20):
         doc = mapping["docs"][i]
@@ -60,13 +73,16 @@ for uid in UIDs:
             "uid": uid,
             "doc": doc,
             "overall": {},
-            "time": sheet_done[f"B{row_rating+1}"].value,
+            "time": parse_time(sheet_done[f"B{row_rating+1}"].value),
             "rating": {},
             "lines": []
         }
         if line_doc["time"] is None:
+            docs_skipped.append(doc)
             # skip this doc
             continue
+
+        docs_time.append(line_doc["time"])
 
         for system_permd in range(4):
             rating = {}
@@ -102,6 +118,8 @@ for uid in UIDs:
 
             line_doc["lines"].append(line_transl)
         DATA.append(line_doc)
+    
+    print(f"{uid:<13} | {20-len(docs_skipped):>4} | ", f"{np.average(docs_time):>6.0f}min | " if docs_time else f"{'':>9} | ")
 
 # not using save_json because of cache/encoding issue?
 with open("data/parsed.json", "w") as f:
