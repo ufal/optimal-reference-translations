@@ -9,6 +9,7 @@ from openpyxl.styles import Alignment, Color, PatternFill
 import random
 from collections import defaultdict
 from xlsx_consts import *
+from consts import *
 
 args = ArgumentParser()
 args = args.parse_args()

@@ -4,17 +4,6 @@ from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.formatting.rule import CellIsRule, FormulaRule
 from collections import defaultdict
 
-# "harare",
-# "lusaka",
-UIDs = [
-    "sahara", "cardiff", "hanoi",
-    "caracas", "montevideo", "washington", "kampala", "funafuti",
-    "ashgabat", "ankara", "tiraspol", "lome", "bangkok",
-    "dodoma", "dushanbe", "damascus", "bern", "stockholm",
-    "paramaribo", "khartoum", "madrid", "juba", "seoul",
-    "pretoria", "hargeisa", "mogadishu", "honiara", "ljubljana",
-    "bratislava", "philipsburg", "singapore", "freetown", "belgrade",
-]
 FILL_0A = PatternFill(
     patternType='solid',
     fill_type='solid', fgColor=Color('aaaaaa')

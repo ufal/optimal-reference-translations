@@ -29,6 +29,8 @@ ATTRIBUTES = [
 ]
 
 def parse_time(val):
+    # we need this function because some people wrote also some text into the 
+    # time field
     if val is None:
         return None
     elif type(val) == float:
@@ -39,6 +41,7 @@ def parse_time(val):
         raise Exception("Unable to parse", val, "as time")
 
 print(f"{'UID':<13} | {'docs':>4} | {'avg. time':>10} |")
+docs_time_avgs = []
 for uid in UIDs:
     if not Path(f"data/done/translations_{uid}.xlsx").is_file():
         continue
@@ -120,6 +123,9 @@ for uid in UIDs:
         DATA.append(line_doc)
     
     print(f"{uid:<13} | {20-len(docs_skipped):>4} | ", f"{np.average(docs_time):>6.0f}min | " if docs_time else f"{'':>9} | ")
+    if docs_time:
+        docs_time_avgs.append(np.average(docs_time))
+print(f"Average time per document: {np.average(docs_time_avgs):.0f}min")
 
 # not using save_json because of cache/encoding issue?
 with open("data/parsed.json", "w") as f:
