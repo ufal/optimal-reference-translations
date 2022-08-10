@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from utils import load_data, save_pickle
-from lm_models import Czert, RobeCzech
+from embedding_space.lm_models import Czert, RobeCzech
 from tqdm import tqdm
 from argparse import ArgumentParser
 

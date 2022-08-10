@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-from utils import save_json, read_json
+from utils import read_json
 from collections import defaultdict
 import numpy as np
 import matplotlib.pyplot as plt
-from sacrebleu import sentence_ter, sentence_chrf
+import sys
+sys.path.append("src")
 import fig_utils
 from consts import *
 
 data = read_json("data/parsed.json")
-metric_scores = []
 rating_scores = []
-metric = sentence_ter
 
 data_time = defaultdict(lambda: list())
 data_time_avg = defaultdict(lambda: list())

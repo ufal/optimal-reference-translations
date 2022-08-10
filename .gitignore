@@ -3,6 +3,7 @@ computed/*.embd
 data/**/*.csv
 data/**/*.xlsx
 data/**/*.json
+/figures
 models
 
 # Byte-compiled / optimized / DLL files
