@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+import sys
+sys.path.append("src")
 from utils import save_json, read_json
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
 import json
 from pathlib import Path
 import numpy as np
@@ -40,7 +42,7 @@ def parse_time(val):
     else:
         raise Exception("Unable to parse", val, "as time")
 
-print(f"{'UID':<13} | {'docs':>4} | {'avg. time':>10} |")
+print(f"{'UID':<13} | {'docs':>4} | {'avg. time':>10} | {'sum time':>10} |")
 docs_time_avgs = []
 for uid in UIDs:
     if not Path(f"data/done/translations_{uid}.xlsx").is_file():
@@ -122,7 +124,7 @@ for uid in UIDs:
             line_doc["lines"].append(line_transl)
         DATA.append(line_doc)
     
-    print(f"{uid:<13} | {20-len(docs_skipped):>4} | ", f"{np.average(docs_time):>6.0f}min | " if docs_time else f"{'':>9} | ")
+    print(f"{uid:<13} | {20-len(docs_skipped):>4} | ", f"{np.average(docs_time):>6.0f}min | " if docs_time else f"{'':>9} | ", f"{sum(docs_time)/60:>8.1f}h |")
     if docs_time:
         docs_time_avgs.append(np.average(docs_time))
 print(f"Average time per document: {np.average(docs_time_avgs):.0f}min")

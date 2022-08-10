@@ -1,3 +1,5 @@
+import sys
+sys.path.append("src")
 from transformers import AutoTokenizer, AutoModel
 from utils import get_device
 import torch
