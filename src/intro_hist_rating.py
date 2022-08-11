@@ -3,8 +3,6 @@
 from utils import save_json, read_json
 import json
 from collections import defaultdict
-import numpy as np
-import matplotlib.pyplot as plt
 
 data = read_json("data/parsed.json")
 sentlevel = defaultdict(lambda: defaultdict(list))
@@ -33,7 +31,6 @@ sentlevel_flat = [
     for r in rating_system
 ]
 
-
 # * Kolik procent hodnocení (vyjma těch maximálních=6) je neceločíselných?
 print("\n")
 print(f"Total ratings: {len(sentlevel_flat)}")
@@ -49,10 +46,3 @@ print(
     "Rating 6 (perc.):",
     f"{sum([x==6 for x in sentlevel_flat])/len(sentlevel_flat):.0%}"
 )
-
-plt.figure(figsize=(5,3))
-plt.xlabel("Rating (7 buckets)")
-plt.ylabel("Count")
-plt.hist(sentlevel_flat)
-plt.tight_layout()
-plt.show()

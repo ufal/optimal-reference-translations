@@ -6,14 +6,15 @@ from utils import read_json
 import fig_utils
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 data = read_json("data/parsed.json")
 xs_doc = []
 ys_doc = []
-xs_sent = []
-ys_sent = []
+xs_seg = []
+ys_seg = []
 features = [
     'spelling', 'terminology',
     'grammar', 'meaning', 'style', 'pragmatics'
@@ -32,23 +33,29 @@ for doc in data:
             # TODO: hotfix unfinished data
             if any([v is None for v in translation["rating"].values()]):
                 continue
-            ys_sent.append(translation["rating"]["overall"])
-            xs_sent.append([translation["rating"][f] for f in features])
+            ys_seg.append(translation["rating"]["overall"])
+            xs_seg.append([translation["rating"][f] for f in features])
 
+
+xs_doc = np.array(xs_doc)
+xs_doc = xs_doc - np.mean(xs_doc, axis=0)
+xs_seg = np.array(xs_seg)
+xs_seg = xs_seg - np.mean(xs_seg, axis=0)
 
 xs_doc_train, xs_doc_test, ys_doc_train, ys_doc_test = train_test_split(
     xs_doc, ys_doc,
     test_size=100,
     random_state=0
 )
-xs_sent_train, xs_sent_test, ys_sent_train, ys_sent_test = train_test_split(
-    xs_sent, ys_sent,
+xs_seg_train, xs_seg_test, ys_seg_train, ys_seg_test = train_test_split(
+    xs_seg, ys_seg,
     test_size=100,
     random_state=0
 )
 
-
+COLORS = ["#9c2963", "#fb9e07"]
 def draw_scatter(ax, xs_train, ys_train, xs_test, ys_test, label):
+    print(f"{label} train/test {len(xs_train)}/{len(xs_test)}")
     model = LinearRegression()
     model.fit(xs_train, ys_train)
     ys_pred = model.predict(xs_test)
@@ -88,12 +95,16 @@ def draw_scatter(ax, xs_train, ys_train, xs_test, ys_test, label):
         [y[0] for y in ys],
         label="Predicted",
         alpha=0.5,
+        color=COLORS[0],
+        edgecolors="black",
     )
     ax.scatter(
         list(range(len(ys))),
         [y[1] for y in ys],
         label="True",
-        alpha=0.25,
+        alpha=0.4,
+        color=COLORS[1],
+        edgecolors="black",
     )
     ax.set_xticks([], [])
     ax.set_ylabel("Rating " + r"$\bf{" + label + "}$")
@@ -112,8 +123,8 @@ draw_scatter(
 )
 draw_scatter(
     plt.subplot(2, 1, 2),
-    xs_sent_train, ys_sent_train,
-    xs_sent_test, ys_sent_test,
+    xs_seg_train, ys_seg_train,
+    xs_seg_test, ys_seg_test,
     "segments"
 )
 
@@ -121,5 +132,5 @@ draw_scatter(
 plt.xlabel("Test items (docs or segments)")
 plt.legend(ncol=2)
 plt.tight_layout(pad=0)
-plt.savefig("figures/lr_doc_sent.pdf")
+plt.savefig("figures/lr_doc_seg.pdf")
 plt.show()

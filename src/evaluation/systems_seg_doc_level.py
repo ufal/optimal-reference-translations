@@ -165,5 +165,5 @@ plt.colorbar(
     ticks=np.linspace(VMIN, VMAX, num=5),
 )
 plt.tight_layout(pad=0, rect=[0, -0.01, 1, 1.1])
-plt.savefig("figures/systems_sent_doc_level.pdf")
+plt.savefig("figures/systems_seg_doc_level.pdf")
 plt.show()
