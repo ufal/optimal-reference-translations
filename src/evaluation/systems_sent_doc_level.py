@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import sys
+sys.path.append("src")
 from utils import read_json
 from collections import defaultdict
 import numpy as np
@@ -20,7 +22,7 @@ for doc in data:
                 rating_value = float(rating_value)
                 doclevel[system_name][rating_name].append(rating_value)
             except:
-                print(rating_value)
+                print(rating_value, doc["uid"], doc["doc"], "x")
 
     for line in doc["lines"]:
         for system_name, translation in line["translations"].items():
@@ -30,7 +32,7 @@ for doc in data:
                     float(rating_value)
                     sentlevel[system_name][rating_name].append(rating_value)
                 except:
-                    print(rating_value)
+                    print(rating_value, doc["uid"], doc["doc"])
 
             # store sentence pairs
             if translation["orig"] is not None:
@@ -88,63 +90,77 @@ plt.yticks(list(range(4)), ["P1", "P2", "P3", "N1"])
 VMIN = 4.8
 VMAX = 6
 
+
 def get_color(val):
     if val > 5.4:
         return "black"
     else:
         return "white"
 
+
 for s_i, s in enumerate(["1", "2", "3", "4"]):
     for a_i, a in enumerate(attributes):
         result = doclevel[s][a]
         img[s_i, a_i] = result
         plt.text(
-            a_i+0.2, s_i +0.25, f"{result:.1f}",
+            a_i + 0.2, s_i + 0.25, f"{result:.1f}",
             ha="center", va="center", color=get_color(result),
         )
 
         result = sentlevel[s][a]
-        
+
         triangle = plt.Polygon(
-            np.array([[a_i, s_i], [a_i + 1, s_i], [a_i, s_i+1]]) - 0.5,
+            np.array([[a_i, s_i], [a_i + 1, s_i], [a_i, s_i + 1]]) - 0.5,
             # color input needs to be normalized
             color=cmap((result - VMIN) / (VMAX - VMIN))
         )
         ax.add_patch(triangle)
 
         plt.text(
-            a_i-0.2, s_i -0.25, f"{result:.1f}",
+            a_i - 0.2, s_i - 0.25, f"{result:.1f}",
             ha="center", va="center", color=get_color(result),
         )
 
+OVERALL_SENT = np.average([x["overall"] for x in sentlevel.values()])
+OVERALL_DOC = np.average([x["overall"] for x in doclevel.values()])
+
 # add "legend"
 triangle = plt.Polygon(
-    np.array([[6.75, -0.5], [7+1, -0.5], [6.75, 0.5]]),
+    np.array([[6.75, -0.5], [7 + 1, -0.5], [6.75, 0.5]]),
     # color input needs to be normalized
-    facecolor=cmap((5.4 - VMIN) / (VMAX - VMIN)),
+    facecolor=cmap((OVERALL_DOC - VMIN) / (VMAX - VMIN)),
     edgecolor="black",
     clip_on=False
 )
 ax.add_patch(triangle)
 triangle = plt.Polygon(
-    np.array([[7+1, 0.5], [7+1, -0.5], [6.75, 0.5]]),
+    np.array([[7 + 1, 0.5], [7 + 1, -0.5], [6.75, 0.5]]),
     # color input needs to be normalized
-    facecolor=cmap((5.8 - VMIN) / (VMAX - VMIN)),
+    facecolor=cmap((OVERALL_SENT - VMIN) / (VMAX - VMIN)),
     edgecolor="black",
     clip_on=False
 )
 ax.add_patch(triangle)
 plt.text(
     7.2, -0.25, "Doc.",
-    ha="center", va="center", color="black",
+    ha="center", va="center", color="white",
 )
 plt.text(
     7.55, 0.35, "Sent.",
-    ha="center", va="center", color="black",
+    ha="center", va="center", color="white",
+)
+
+# overall separator
+plt.vlines(
+    5.5, ymin=-0.5, ymax=3.5,
+    color="black", linestyles=":"
 )
 
 plt.imshow(img, cmap=cmap, vmin=VMIN, vmax=VMAX)
-plt.colorbar(cmap=cmap, shrink=0.65, aspect=10, anchor=(0, 0.0))
-plt.tight_layout(pad=0, rect=[0,0,1,1.1])
-plt.savefig("figures/sent_doc_level.pdf")
+plt.colorbar(
+    cmap=cmap, shrink=0.65, aspect=10, anchor=(0, 0.0),
+    ticks=np.linspace(VMIN, VMAX, num=5),
+)
+plt.tight_layout(pad=0, rect=[0, -0.01, 1, 1.1])
+plt.savefig("figures/systems_sent_doc_level.pdf")
 plt.show()

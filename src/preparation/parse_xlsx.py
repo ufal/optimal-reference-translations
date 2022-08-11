@@ -48,7 +48,8 @@ for uid in UIDs:
     if not Path(f"data/done/translations_{uid}.xlsx").is_file():
         continue
     mapping = read_json(f"data/mapping/mapping_{uid}.json")
-    wb = load_workbook(f"data/done/translations_{uid}.xlsx")
+    # data_only allows reading formula results (via cache)
+    wb = load_workbook(f"data/done/translations_{uid}.xlsx", data_only=True)
     docs_skipped = []
     docs_time = []
 
