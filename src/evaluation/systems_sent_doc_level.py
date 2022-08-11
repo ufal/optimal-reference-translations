@@ -3,6 +3,7 @@
 import sys
 sys.path.append("src")
 from utils import read_json
+import fig_utils
 from collections import defaultdict
 import numpy as np
 import matplotlib.pyplot as plt
@@ -92,7 +93,7 @@ VMAX = 6
 
 
 def get_color(val):
-    if val > 5.4:
+    if val > 5.45:
         return "black"
     else:
         return "white"
@@ -121,24 +122,26 @@ for s_i, s in enumerate(["1", "2", "3", "4"]):
             ha="center", va="center", color=get_color(result),
         )
 
-OVERALL_SENT = np.average([x["overall"] for x in sentlevel.values()])
-OVERALL_DOC = np.average([x["overall"] for x in doclevel.values()])
+# OVERALL_SENT = np.average([x["overall"] for x in sentlevel.values()])
+# OVERALL_DOC = np.average([x["overall"] for x in doclevel.values()])
 
 # add "legend"
 triangle = plt.Polygon(
     np.array([[6.75, -0.5], [7 + 1, -0.5], [6.75, 0.5]]),
     # color input needs to be normalized
-    facecolor=cmap((OVERALL_DOC - VMIN) / (VMAX - VMIN)),
+    facecolor=cmap((5.2 - VMIN) / (VMAX - VMIN)),
     edgecolor="black",
-    clip_on=False
+    clip_on=False,
+    linewidth=1.5,
 )
 ax.add_patch(triangle)
 triangle = plt.Polygon(
     np.array([[7 + 1, 0.5], [7 + 1, -0.5], [6.75, 0.5]]),
     # color input needs to be normalized
-    facecolor=cmap((OVERALL_SENT - VMIN) / (VMAX - VMIN)),
+    facecolor=cmap((5.8 - VMIN) / (VMAX - VMIN)),
     edgecolor="black",
-    clip_on=False
+    clip_on=False,
+    linewidth=1.5,
 )
 ax.add_patch(triangle)
 plt.text(
@@ -147,7 +150,7 @@ plt.text(
 )
 plt.text(
     7.55, 0.35, "Sent.",
-    ha="center", va="center", color="white",
+    ha="center", va="center", color="black",
 )
 
 # overall separator
