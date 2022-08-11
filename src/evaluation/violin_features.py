@@ -44,7 +44,7 @@ def draw_scatter(ax, xs, label):
     # rotate so that each inside list is for a single array
     xs = xs.T
     # clip data
-    xs = [[x for x in x_r if x > 1.5] for x_r in xs]
+    xs = [[x for x in x_r if x >= 2] for x_r in xs]
     violin_parts = ax.violinplot(
         xs,
         showmeans=True,
@@ -59,6 +59,10 @@ def draw_scatter(ax, xs, label):
         pc.set_aa(True)
     violin_parts['cmeans'].set_linewidth(1.2)
     violin_parts['cmeans'].set_color("black")
+    ax.set_yticks(
+        [2,3,4,5,6],
+        [2,3,4,5,6],
+    )
 
     for f_i, f_mean in enumerate(f_means):
         # I have no idea why we have to divide by 7.7 and not 6
@@ -93,17 +97,6 @@ draw_scatter(
     xs_seg,
     "segments"
 )
-
-# rotate to index by features
-xs_doc = xs_doc.T
-xs_seg = xs_seg.T
-
-print("DOC correlations")
-for f_i, f in enumerate(features):
-    print(f"{f:>12}-overall: {np.corrcoef(xs_doc[f_i], xs_doc[-1])[0,1]:.2f}")
-print("\nSEG correlations")
-for f_i, f in enumerate(features):
-    print(f"{f:>12}-overall: {np.corrcoef(xs_seg[f_i], xs_seg[-1])[0,1]:.2f}")
 
 # address the last one
 plt.tight_layout(pad=0)
