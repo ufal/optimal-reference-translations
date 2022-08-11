@@ -94,6 +94,17 @@ draw_scatter(
     "segments"
 )
 
+# rotate to index by features
+xs_doc = xs_doc.T
+xs_seg = xs_seg.T
+
+print("DOC correlations")
+for f_i, f in enumerate(features):
+    print(f"{f:>12}-overall: {np.corrcoef(xs_doc[f_i], xs_doc[-1])[0,1]:.2f}")
+print("\nSEG correlations")
+for f_i, f in enumerate(features):
+    print(f"{f:>12}-overall: {np.corrcoef(xs_seg[f_i], xs_seg[-1])[0,1]:.2f}")
+
 # address the last one
 plt.tight_layout(pad=0)
 plt.savefig("figures/violin_features.pdf")
