@@ -63,12 +63,12 @@ def draw_scatter(ax, xs_train, ys_train, xs_test, ys_test, label):
     lr_explanation = "$"
     lr_explanation += " + ".join([
         f"{c:.1f}\\cdot {n}"
-        for c, n in zip(model.coef_, features[:3])
+        for c, n in zip(model.coef_[:3], features[:3])
     ])
     lr_explanation += "$ \n $ + \,"
     lr_explanation += " + ".join([
         f"{c:.1f}\\cdot {n}"
-        for c, n in zip(model.coef_, features[3:])
+        for c, n in zip(model.coef_[3:], features[3:])
     ])
     if model.intercept_ >= 0:
         lr_explanation += " + "
