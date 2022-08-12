@@ -13,7 +13,9 @@ data = read_json("data/parsed.json")
 metric_scores = []
 rating_scores = []
 post_edited = []
+orig_word_counts = []
 metric = sentence_ter
+
 
 for doc in tqdm.tqdm(data):
     for line in doc["lines"]:
@@ -25,12 +27,13 @@ for doc in tqdm.tqdm(data):
                     metric(translation["orig"], [translation["done"]]).score
                 )
                 rating_scores.append(translation["rating"]["overall"])
-
+                orig_word_counts.append(len(translation["orig"].split()))
 
 corr_coef = np.corrcoef(metric_scores, rating_scores)[1, 0]
 plt.figure(figsize=(5, 3))
 
 print(sum(post_edited), f"post-edited in total ({sum(post_edited)/len(post_edited):.2%})")
+print(f"On average {np.average(orig_word_counts):.1f} source tokens per sentence")
 
 linear_model = np.polyfit(metric_scores, rating_scores, 1)
 linear_model_fn = np.poly1d(linear_model)
