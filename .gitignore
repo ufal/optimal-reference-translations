@@ -1,7 +1,10 @@
 # added by zouharvi
 computed/*.embd
+computed/*.xlsx
+computed/*.xlsx#
 data/**/*.xlsx
 data/**/*.json
+data/**/*.gz
 /figures
 models
 

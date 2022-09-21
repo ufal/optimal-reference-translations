@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
 from utils import load_data, load_data_structure, save_json
-import csv
 from argparse import ArgumentParser
-from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Color, PatternFill
 import random
@@ -18,27 +16,6 @@ ATTRIBUTES = [
     "Spelling", "Terminology", "Grammar",
     "Meaning", "Style", "Pragmatics", "Overall"
 ]
-
-
-def ord_to_col(i):
-    if i < 0:
-        raise Exception(f"Attempted to transform {i} into a column name")
-    if i < 26:
-        return chr(ord("A") + i)
-    if i < 26 * 26:
-        return ord_to_col(i // 26 - 1) + ord_to_col(i % 26)
-    raise Exception(f"Too large a column number {i}")
-
-
-def get_height_for_row(sheet, row_number):
-    row = list(sheet.rows)[row_number - 1]
-    return max(
-        40,
-        max([
-            len(cell.value) / 2.7 if cell.value is not None else 0
-            for cell in row
-        ])
-    )
 
 
 COLS_ATTRIBUTES_ALL = [
@@ -118,10 +95,11 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
             cell = sheet[col + str(line_i)]
             if col == "A" or (line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]):
                 cell.value = sent
-            
+
             for col in COLS_ATTRIBUTES_FLAT:
                 if line_i - 1 >= DOC_SPANS[doc_k][0] and line_i - 1 <= DOC_SPANS[doc_k][1]:
-                    sheet.conditional_formatting.add(col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
+                    sheet.conditional_formatting.add(
+                        col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
                     VALIDATION_NUM[doc_k].add(col + str(line_i))
                 else:
                     VALIDATION_NONE[doc_k].add(col + str(line_i))
@@ -162,11 +140,12 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
 
     line_i += 2
     sheet["A" + str(line_i)].value = f"Document rating"
-    sheet["A" + str(line_i+1)].value = f"Document time (minutes)"
-    sheet.conditional_formatting.add("B" + str(line_i+1), FORMATTING_BLANK("B" + str(line_i+1)))
-    sheet["B" + str(line_i+1)].border = MEDIUM_BORDER_ALL
-    sheet["A" + str(line_i+1)].fill = FILL_0A
-    sheet["A" + str(line_i+1)].font = FONT_BOLD
+    sheet["A" + str(line_i + 1)].value = f"Document time (minutes)"
+    sheet.conditional_formatting.add(
+        "B" + str(line_i + 1), FORMATTING_BLANK("B" + str(line_i + 1)))
+    sheet["B" + str(line_i + 1)].border = MEDIUM_BORDER_ALL
+    sheet["A" + str(line_i + 1)].fill = FILL_0A
+    sheet["A" + str(line_i + 1)].font = FONT_BOLD
     sheet.row_dimensions[line_i].height = 40
 
     for col in COLS_TRANSLATIONS - {"A"}:
@@ -179,7 +158,8 @@ def add_edit_sheet(workbook, doc_i, doc_k, doc_v):
     for col in COLS_ATTRIBUTES_FLAT:
         sheet[col + str(line_i)].border = MEDIUM_BORDER_ALL
         VALIDATION_NUM[doc_k].add(col + str(line_i))
-        sheet.conditional_formatting.add(col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
+        sheet.conditional_formatting.add(
+            col + str(line_i), FORMATTING_BLANK(col + str(line_i)))
         sheet[col + str(line_i)].alignment = Alignment(
             textRotation=90,
             horizontal="center"
@@ -260,7 +240,7 @@ def add_locked_sheet(workbook, doc_i, doc_k, doc_v):
 
 DOC_SPANS = {
     'latimes.431856': (1, 8),
-    'metro.co.uk.12069': (6, 13), # removed
+    'metro.co.uk.12069': (6, 13),  # removed
     'en.ndtv.com.13152': (3, 10),
     'guardian.260810': (2, 9),
     'rt.com.113909': (1, 8),
@@ -272,7 +252,7 @@ DOC_SPANS = {
     'brisbanetimes.com.au.225990': (4, 11),
     'reuters.276709': (4, 11),
     'cbsnews.302129': (3, 10),
-    'independent.281139': (1, 8), # removed
+    'independent.281139': (1, 8),  # removed
     'en.ndtv.com.13143': (3, 10),
     'huffingtonpost.com.19376': (1, 8),
     'cbsnews.302172': (1, 8),

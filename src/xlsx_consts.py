@@ -101,3 +101,24 @@ FONT_BOLD = Font(bold=True, name="Arial")
 FONT_NORMAL = Font(bold=False, name="Arial")
 
 FORMATTING_BLANK = lambda cell: FormulaRule(formula=[f'ISBLANK({cell})'], stopIfTrue=True, fill=FILL_BLANK)
+
+
+def ord_to_col(i):
+    if i < 0:
+        raise Exception(f"Attempted to transform {i} into a column name")
+    if i < 26:
+        return chr(ord("A") + i)
+    if i < 26 * 26:
+        return ord_to_col(i // 26 - 1) + ord_to_col(i % 26)
+    raise Exception(f"Too large a column number {i}")
+
+
+def get_height_for_row(sheet, row_number):
+    row = list(sheet.rows)[row_number - 1]
+    return max(
+        40,
+        max([
+            len(cell.value) / 2.7 if cell.value is not None else 0
+            for cell in row
+        ])
+    )
