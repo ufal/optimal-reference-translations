@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-from utils import save_json, read_json
-import json
+from utils import read_json
 from collections import defaultdict
 
 data = read_json("data/parsed.json")
@@ -13,7 +12,7 @@ for doc in data:
     for line in doc["lines"]:
         for system_name, translation in line["translations"].items():
             for rating_name, rating_value in translation["rating"].items():
-                # TODO: hotfix unfinished dataa
+                # TODO: hotfix unfinished data
                 if rating_value is None:
                     continue
                 sentlevel[system_name][rating_name].append(rating_value)
@@ -46,3 +45,14 @@ print(
     "Rating 6 (perc.):",
     f"{sum([x==6 for x in sentlevel_flat])/len(sentlevel_flat):.0%}"
 )
+
+total_doc_rating = 0
+for doc in data:
+    for system_name, translation in doc["rating"].items():
+        for rating_name, rating_value in translation.items():
+            # TODO: hotfix unfinished data
+            if rating_value is None:
+                continue
+            total_doc_rating += 1
+
+print(f"Total doc ratings: {total_doc_rating}")

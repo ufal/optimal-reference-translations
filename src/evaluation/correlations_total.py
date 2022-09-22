@@ -4,7 +4,6 @@ import sys
 sys.path.append("src")
 from utils import read_json
 import numpy as np
-from sklearn.model_selection import train_test_split
 
 data = read_json("data/parsed.json")
 xs_doc = []

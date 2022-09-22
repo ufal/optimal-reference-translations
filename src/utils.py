@@ -66,3 +66,8 @@ def read_json(path):
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=4)
+
+CATEGORIES = [
+    'spelling', 'terminology', 'grammar',
+    'meaning', 'style', 'pragmatics', 'overall'
+]

@@ -78,7 +78,6 @@ for uid in UIDs:
         line_doc = {
             "uid": uid,
             "doc": doc,
-            "overall": {},
             "time": parse_time(sheet_done[f"B{row_rating+1}"].value),
             "rating": {},
             "lines": []

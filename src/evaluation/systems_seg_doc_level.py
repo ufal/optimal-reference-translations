@@ -18,7 +18,7 @@ time = []
 for doc in data:
     for system_name, rating in doc["rating"].items():
         for rating_name, rating_value in rating.items():
-            # TODO: hotfix unfinished dataa
+            # TODO: hotfix unfinished data
             try:
                 rating_value = float(rating_value)
                 doclevel[system_name][rating_name].append(rating_value)
@@ -28,7 +28,7 @@ for doc in data:
     for line in doc["lines"]:
         for system_name, translation in line["translations"].items():
             for rating_name, rating_value in translation["rating"].items():
-                # TODO: hotfix unfinished dataa
+                # TODO: hotfix unfinished data
                 try:
                     float(rating_value)
                     sentlevel[system_name][rating_name].append(rating_value)
