@@ -31,3 +31,5 @@ METRIC_PRETTY_NAME = {
     "comet": "COMET",
     "bleurt": "BLEURT"
 }
+
+COLORS_EXTRA = ["#9c2963", "#fb9e07"]

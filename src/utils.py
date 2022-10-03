@@ -71,3 +71,18 @@ CATEGORIES = [
     'spelling', 'terminology', 'grammar',
     'meaning', 'style', 'pragmatics', 'overall'
 ]
+
+# order specific for annotator_differences
+UID_MAP = {
+    "lome": "translator",
+    "ankara": "translator",
+    "tiraspol": "translator",
+    "caracas": "translator",
+    "sahara": "student",
+    "kampala": "student",
+    "montevideo": "student",
+    "hanoi": "nontranslator",
+    "washington": "nontranslator",
+    "cardiff": "nontranslator",
+    "funafuti": "nontranslator",
+}
