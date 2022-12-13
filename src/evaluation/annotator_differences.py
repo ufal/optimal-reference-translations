@@ -59,11 +59,14 @@ COLORS = {
 x_offset = 0
 prev_expertise = "translator"
 
+expertise_all = collections.defaultdict(list)
+
 for uid_i, uid  in enumerate(UID_MAP.keys()):
     uid_lines = data_lines[uid]
     expertise = UID_MAP[uid]
     data_local = [x["overall"] for x in uid_lines]
     data_local_crop = [x for x in data_local if x >= 2]
+    expertise_all[expertise] += data_local
 
     if prev_expertise != expertise:
         prev_expertise = expertise
@@ -84,6 +87,9 @@ for uid_i, uid  in enumerate(UID_MAP.keys()):
         pc.set_aa(True)
     violin_parts['cmeans'].set_linewidth(1.2)
     violin_parts['cmeans'].set_color("black")
+
+for expertise, expertise_data in expertise_all.items():
+    print(f"{expertise}: {np.average(expertise_data):.2f}")
 
 plt.xticks(
     [1.5, 5.5, 9.5],

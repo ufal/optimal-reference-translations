@@ -4,9 +4,11 @@
 Creates a XLSX that allows for qualitative analysis by a colaborator
 """
 
+import collections
 import itertools
 import json
 import sys
+import numpy as np
 from openpyxl import Workbook
 from openpyxl.styles import Alignment
 from openpyxl.cell.text import RichText
@@ -61,6 +63,8 @@ def next_row_format(rows, first=False):
 
     return row
 
+n1_worse_all = collections.defaultdict(list)
+
 for category in categories:
     sheet = workbook_n1_worse.create_sheet(category)
     sheet.freeze_panes = sheet["A2"]
@@ -97,6 +101,13 @@ for category in categories:
             p2 = line["translations"]["2"]
             p3 = line["translations"]["3"]
 
+            if p1["rating"]["overall"] is not None and n1["rating"]["overall"] is not None:
+                n1_worse_all["p1"].append(p1["rating"]["overall"] > n1["rating"]["overall"])
+            if p2["rating"]["overall"] is not None and n1["rating"]["overall"] is not None:
+                n1_worse_all["p2"].append(p2["rating"]["overall"] > n1["rating"]["overall"])
+            if p3["rating"]["overall"] is not None and n1["rating"]["overall"] is not None:
+                n1_worse_all["p3"].append(p3["rating"]["overall"] > n1["rating"]["overall"])
+
             if any(x["rating"][category] is None for x in [n1, p1, p2, p3]):
                 continue
 
@@ -124,5 +135,5 @@ for category in categories:
     for line_i in range(2, sheet.max_row):
         sheet.row_dimensions[line_i].height = get_height_for_row(sheet, line_i)
 
-
+print({k:f"{np.average(v):.2%}" for k,v in n1_worse_all.items()})
 workbook_n1_worse.save("computed/vera_n1_worse.xlsx")
