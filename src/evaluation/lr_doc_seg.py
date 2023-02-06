@@ -91,19 +91,21 @@ def draw_scatter(ax, xs_train, ys_train, xs_test, ys_test, label):
     ys = list(zip(ys_pred, ys_test))
     ys.sort(key=lambda x: x[1])
     ax.scatter(
-        list(range(len(ys))),
-        [y[0] for y in ys],
+        list(range(len(ys)))[::2],
+        [y[0] for y in ys][::2],
         label="Predicted",
         alpha=0.5,
-        color=COLORS[0],
-        edgecolors="black",
+        color="black",
+        # edgecolors="black",
+        marker="2",
+        s=50,
     )
     ax.scatter(
-        list(range(len(ys))),
-        [y[1] for y in ys],
+        list(range(len(ys)))[::2],
+        [y[1] for y in ys][::2],
         label="True",
         alpha=0.4,
-        color=COLORS[1],
+        color=COLORS[0],
         edgecolors="black",
     )
     ax.set_xticks([], [])
