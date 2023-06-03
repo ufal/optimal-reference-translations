@@ -44,12 +44,13 @@ def draw_scatter(ax, xs, label):
     # rotate so that each inside list is for a single array
     xs = xs.T
     # clip data
-    xs = [[x for x in x_r if x >= 2] for x_r in xs]
+    xs = [[x for x in x_r if x >= 3] for x_r in xs]
     violin_parts = ax.violinplot(
         xs,
         showmeans=True,
-        widths=1,
+        widths=1.8,
         showextrema=False,
+        bw_method=0.2
     )
     for pc in violin_parts['bodies']:
         pc.set_facecolor(COLORS[0])
@@ -57,18 +58,29 @@ def draw_scatter(ax, xs, label):
         pc.set_linewidth(1.2)
         pc.set_alpha(0.75)
         pc.set_aa(True)
+
+        # get the center
+        m = np.mean(pc.get_paths()[0].vertices[:, 0])
+        # modify the paths to not go further left than the center
+        pc.get_paths()[0].vertices[:, 0] = np.clip(
+            pc.get_paths()[0].vertices[:, 0],
+            m, np.inf
+        )
+
     violin_parts['cmeans'].set_linewidth(1.2)
     violin_parts['cmeans'].set_color("black")
+    for p in violin_parts['cmeans'].get_paths():
+        p.vertices[0, 0] += 0.45
     ax.set_yticks(
-        [2,3,4,5,6],
-        [2,3,4,5,6],
+        [3, 4, 5, 6],
+        [3, 4, 5, 6],
     )
 
     for f_i, f_mean in enumerate(f_means):
-        # I have no idea why we have to divide by 7.7 and not 6
+        # I have no idea why we have to divide by 8.6 and not 6
         # but this aligns the text labels good
         ax.text(
-            (f_i)/7.7+0.05, 0.1,
+            (f_i) / 7.2 + 0.05, 0.1,
             f"{f_mean:.1f}",
             ha="left",
             transform=ax.transAxes,
@@ -80,13 +92,14 @@ def draw_scatter(ax, xs, label):
     else:
         ax.set_xticks(
             [x_i + 1 for x_i, x in enumerate(features)],
-            [("\n" if x_i % 2 else "") + x.title()
-             for x_i, x in enumerate(features)]
+            # [("\n" if x_i % 2 else "") +
+            [x.title() for x_i, x in enumerate(features)]
         )
     ax.set_ylabel("Rating " + r"$\bf{" + label + "}$")
+    ax.set_xlim(0.7, 8)
 
 
-plt.figure(figsize=(5, 4))
+plt.figure(figsize=(8, 4))
 draw_scatter(
     plt.subplot(2, 1, 1),
     xs_doc,
@@ -99,6 +112,6 @@ draw_scatter(
 )
 
 # address the last one
-plt.tight_layout(pad=0)
+plt.tight_layout(pad=0.1)
 plt.savefig("figures/violin_features.pdf")
 plt.show()

@@ -47,7 +47,7 @@ for uid, uid_lines in data_lines.items():
     print(f"{val_avg:>7.2f} ({val_var:>.2f})")
     data_out.append((val_avg, val_var, uid))
 
-plt.figure(figsize=(5, 3))
+plt.figure(figsize=(8, 3))
 ax = plt.gca()
 
 COLORS = {
@@ -65,7 +65,7 @@ for uid_i, uid  in enumerate(UID_MAP.keys()):
     uid_lines = data_lines[uid]
     expertise = UID_MAP[uid]
     data_local = [x["overall"] for x in uid_lines]
-    data_local_crop = [x for x in data_local if x >= 2]
+    data_local_crop = [x for x in data_local if x >= 1]
     expertise_all[expertise] += data_local
 
     if prev_expertise != expertise:
@@ -76,8 +76,9 @@ for uid_i, uid  in enumerate(UID_MAP.keys()):
         data_local_crop,
         positions=[uid_i + x_offset],
         showmeans=True,
-        widths=1,
+        widths=1.8,
         showextrema=False,
+        bw_method=0.2
     )
     for pc in violin_parts['bodies']:
         pc.set_facecolor(COLORS[expertise])
@@ -85,8 +86,22 @@ for uid_i, uid  in enumerate(UID_MAP.keys()):
         pc.set_linewidth(1.2)
         pc.set_alpha(0.75)
         pc.set_aa(True)
+
+
+        # get the center
+        m = np.mean(pc.get_paths()[0].vertices[:, 0])
+        # modify the paths to not go further left than the center
+        pc.get_paths()[0].vertices[:, 0] = np.clip(
+            pc.get_paths()[0].vertices[:, 0],
+            m, np.inf
+        )
+
     violin_parts['cmeans'].set_linewidth(1.2)
     violin_parts['cmeans'].set_color("black")
+    for p in violin_parts['cmeans'].get_paths():
+        p.vertices[0, 0] += 0.45
+
+    ax.set_xlim(-0.7, 12)
 
 for expertise, expertise_data in expertise_all.items():
     print(f"{expertise}: {np.average(expertise_data):.2f}")
@@ -95,7 +110,7 @@ plt.xticks(
     [1.5, 5.5, 9.5],
     ["Translators", "Students", "Non-translators"]
 )
-plt.ylim(2, 6.1)
+plt.ylim(1, 6.1)
 plt.ylabel("Overall score")
 plt.tight_layout()
 plt.savefig("figures/annotator_dist.pdf")
