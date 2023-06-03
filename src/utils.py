@@ -65,7 +65,7 @@ def read_json(path):
 
 def save_json(path, data):
     with open(path, "w") as f:
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4, ensure_ascii=False)
 
 CATEGORIES = [
     'spelling', 'terminology', 'grammar',
