@@ -1,7 +1,6 @@
 import csv
 import pickle
 import json
-import numpy as np
 
 def load_data(filename="data/translations.csv"):
     with open(filename, "r") as f:
@@ -66,23 +65,3 @@ def read_json(path):
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
-
-CATEGORIES = [
-    'spelling', 'terminology', 'grammar',
-    'meaning', 'style', 'pragmatics', 'overall'
-]
-
-# order specific for annotator_differences
-UID_MAP = {
-    "lome": "translator",
-    "ankara": "translator",
-    "tiraspol": "translator",
-    "caracas": "translator",
-    "sahara": "student",
-    "kampala": "student",
-    "montevideo": "student",
-    "hanoi": "nontranslator",
-    "washington": "nontranslator",
-    "cardiff": "nontranslator",
-    "funafuti": "nontranslator",
-}

@@ -8,6 +8,8 @@ data/**/*.gz
 /figures
 models
 data/for_lindat
+tokenization_small100.py
+*.pdf
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
