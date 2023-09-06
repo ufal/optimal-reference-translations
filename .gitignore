@@ -10,6 +10,7 @@ models
 data/for_lindat
 tokenization_small100.py
 *.pdf
+data_tmp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
