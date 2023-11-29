@@ -53,10 +53,12 @@ np.average([doc["rating"]["4"]["overall"] for doc in data])
 np.average([doc["rating"]["3"]["overall"] for doc in data])
 ```
 
-## Results:
+## Results
 
+It make sense to have multiple rounds of translation post-editing.
 ![image](https://github.com/ufal/optimal-reference-translations/assets/7661193/d20d1e2e-4d08-4457-b654-961917d7b0e9)
 
+Translatology students, professionals and laypeople perceive quality differently.
 ![image](https://github.com/ufal/optimal-reference-translations/assets/7661193/190f519d-6851-4186-aac6-7fe53b59ba7f)
 
 
@@ -70,7 +72,7 @@ Beginning of [`data/annotations.json`](data/annotations.json):
         "uid": "sahara",
         "expertise": "student",
         "doc": "huffingtonpost.com.19385",
-        "time": 210.0,                             # in minutes
+        "time": 210.0,                             # self-reported in minutes
         "rating": {
             "2": {                                 # 2 = P2
                 "spelling": 4.0,                   # ranges from 0 to 6
@@ -111,12 +113,12 @@ Beginning of [`data/annotations.json`](data/annotations.json):
         },
         "lines": [
             {
-                "source": "Sony, Disney Back To Work On Third Spider-Man Film",
+                "source": "Sony, Disney Back To Work On Third Spider-Man Film",               # source sentence
                 "comment": null,
                 "translations": {
                     "2": {
-                        "orig": "Sony a Disney opět pracují na třetím filmu o Spider-Manovi",
-                        "done": "Sony a Disney pracují na třetím filmu o Spider-Manovi",
+                        "orig": "Sony a Disney opět pracují na třetím filmu o Spider-Manovi", # original translation
+                        "done": "Sony a Disney pracují na třetím filmu o Spider-Manovi",      # post-edited translation
                         "rating": {
                             "spelling": 6.0,
                             "terminology": 6.0,
