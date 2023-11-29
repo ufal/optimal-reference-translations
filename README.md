@@ -18,7 +18,7 @@ For now cite as:
 Collected English to Czech translation evaluation human data are in [`data/annotations.json`](data/annotations.json). The rest of this repository contains data preparation and evaluation code.
 The process of the data is as follows:
 1. P1, P2, and P3 are independent translations from English to Czech. N1 is an expert translation by a translatologist.
-2. All the human translations are evaluated (in [`data/annotations.json`](data/annotations.json)) by different types of human annotators (laypeople, translatology students, professional translators).
+2. All the human translations are evaluated on document and segment level with detail (in [`data/annotations.json`](data/annotations.json)) by different types of human annotators (laypeople, translatology students, professional translators).
 
 ## Example usage
 
@@ -40,6 +40,16 @@ sum([len(doc["lines"]) for doc in data])
 
 # 7040 annotated translations
 sum([sum([len(line["translations"]) for line in doc["lines"]]) for doc in data])
+
+# 11 annotators
+len(set(doc["uid"] for doc in data))
+
+import numpy as np
+# Average document-level for N1: 5.865
+np.average([doc["rating"]["4"]["overall"] for doc in data])
+
+# Average document-level for P3: 4.810
+>>> np.average([doc["rating"]["3"]["overall"] for doc in data])
 ```
 
 ## Results:
@@ -59,10 +69,10 @@ Beginning of [`data/annotations.json`](data/annotations.json):
         "uid": "sahara",
         "expertise": "student",
         "doc": "huffingtonpost.com.19385",
-        "time": 210.0,
+        "time": 210.0,                             # in minutes
         "rating": {
-            "2": {
-                "spelling": 4.0,
+            "2": {                                 # 2 = P2
+                "spelling": 4.0,                   # ranges from 0 to 6
                 "terminology": 5.5,
                 "grammar": 5.5,
                 "meaning": 5.0,
@@ -70,7 +80,7 @@ Beginning of [`data/annotations.json`](data/annotations.json):
                 "pragmatics": 6.0,
                 "overall": 4.5
             },
-            "4": {
+            "4": {                                 # 4 = N1
                 "spelling": 6.0,
                 "terminology": 6.0,
                 "grammar": 6.0,
@@ -79,7 +89,7 @@ Beginning of [`data/annotations.json`](data/annotations.json):
                 "pragmatics": 6.0,
                 "overall": 5.7
             },
-            "1": {
+            "1": {                                 # 1 = P1
                 "spelling": 6.0,
                 "terminology": 5.9,
                 "grammar": 5.4,
@@ -88,7 +98,7 @@ Beginning of [`data/annotations.json`](data/annotations.json):
                 "pragmatics": 5.8,
                 "overall": 5.0
             },
-            "3": {
+            "3": {                                 # 3 = P3
                 "spelling": 4.5,
                 "terminology": 4.7,
                 "grammar": 5.0,
