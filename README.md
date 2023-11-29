@@ -49,7 +49,7 @@ import numpy as np
 np.average([doc["rating"]["4"]["overall"] for doc in data])
 
 # Average document-level for P3: 4.810
->>> np.average([doc["rating"]["3"]["overall"] for doc in data])
+np.average([doc["rating"]["3"]["overall"] for doc in data])
 ```
 
 ## Results:
