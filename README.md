@@ -18,7 +18,7 @@ For now cite as:
 Collected English to Czech translation evaluation human data are in [`data/annotations.json`](data/annotations.json). The rest of this repository contains data preparation and evaluation code.
 The process of the data is as follows:
 1. P1, P2, and P3 are independent translations from English to Czech. N1 is an expert translation by a translatologist.
-2. All the human translations are evaluated on document and segment level with detail (in [`data/annotations.json`](data/annotations.json)) by different types of human annotators (laypeople, translatology students, professional translators).
+2. All the human translations are evaluated on document and segment level with detail (in [`data/annotations.json`](data/annotations.json)) by different types of human annotators (laypeople, translatology students, professional translators). If the translation is not perfect, the annotators provide a post-edited version for which they would assign the highest grade (6).
 
 ## Example usage
 
