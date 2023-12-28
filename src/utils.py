@@ -38,6 +38,38 @@ def load_data_structure(filename="data/translations.csv"):
 
     return data_new
 
+def load_wmt():
+    data = read_json("data/annotations.json")
+    srcs = list({line["source"] for user_line in data for line in user_line["lines"]})
+
+    data_new = []
+    with open("data/data_tmp/text.tsv", "r") as f:
+        data = list(f.readlines())
+        for line_i, line in enumerate(data):
+            sys, tgt, doc, src = line.removesuffix("\n").split("\t")
+            # skip if not covered
+            if src not in srcs:
+                continue
+            data_new.append({
+                "system": sys,
+                "tgt": tgt,
+                "src": src,
+                "i": line_i
+            })
+
+    # TODO: validate this manually
+    with open("data/data_tmp/scores.tsv", "r") as f:
+        i_to_score = {
+            i:float(l.split("\t")[5]) if l.split("\t")[5] != "None" else 0
+            for i, l in enumerate(f.readlines())
+        }
+
+    data_new = [
+        {"score": i_to_score[line.pop("i")]} | line
+        for line in data_new
+    ]
+
+    return data_new
 
 def get_device():
     import torch
