@@ -38,12 +38,12 @@ def load_data_structure(filename="data/translations.csv"):
 
     return data_new
 
-def load_wmt():
-    data = load_json("data/annotations.json")
+def load_wmt(annotation_path="data/annotations.json", wmt_path="data/data_tmp/"):
+    data = load_json(annotation_path)
     srcs = list({line["source"] for user_line in data for line in user_line["lines"]})
 
     data_new = []
-    with open("data/data_tmp/text.tsv", "r") as f:
+    with open(wmt_path+"/text.tsv", "r") as f:
         data = list(f.readlines())
         for line_i, line in enumerate(data):
             sys, tgt, doc, src = line.removesuffix("\n").split("\t")
@@ -57,8 +57,7 @@ def load_wmt():
                 "i": line_i
             })
 
-    # TODO: validate this manually
-    with open("data/data_tmp/scores.tsv", "r") as f:
+    with open(wmt_path+"/scores.tsv", "r") as f:
         i_to_score = {
             i:float(l.split("\t")[5]) if l.split("\t")[5] != "None" else 0
             for i, l in enumerate(f.readlines())
@@ -136,7 +135,7 @@ def compute_system_spearman(data):
         [system_to_metric[system] for system in systems],
     )
 
-def load_metric_scores(metric_path, pattern_ref, aggregate="average"):
+def load_metric_scores(metric_path, pattern_ref, aggregate="average", refids_path="computed/metric_scores_none.json"):
     """
     Returns metrics computed using a specific 
     """
@@ -161,7 +160,7 @@ def load_metric_scores(metric_path, pattern_ref, aggregate="average"):
     pattern_ref = re.compile(pattern_ref)
 
     # checks if a particular (src, tgt, ref) is permissible
-    refids_data = load_json("computed/metric_scores_none.json", cache=True)
+    refids_data = load_json(refids_path, cache=True)
     triplet_to_refids = collections.defaultdict(set)
     for line in refids_data:
         for ref in line["ref"]:
