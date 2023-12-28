@@ -152,6 +152,10 @@ def load_metric_scores(metric_path, pattern_ref, aggregate="average"):
         aggregate = np.average
     elif aggregate == "random":
         aggregate = random.choice
+    elif aggregate == "max":
+        aggregate = max
+    elif aggregate == "min":
+        aggregate = min
     else:
         raise Exception("Unknown aggregator " + str(aggregate))
 
