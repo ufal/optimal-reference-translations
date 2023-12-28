@@ -71,6 +71,119 @@ def load_wmt():
 
     return data_new
 
+def compute_segment_tau(data):
+    from scipy.stats import kendalltau
+    data_x = [x["human"] for x in data]
+    data_y = [x["metric"] for x in data]
+    return kendalltau(data_x, data_y)
+
+def compute_system_acc(data):
+    import collections
+    import numpy as np
+    import itertools
+
+    system_to_human = collections.defaultdict(list)
+    system_to_metric = collections.defaultdict(list)
+    for line in data:
+        system_to_human[line["system"]].append(line["human"])
+        system_to_metric[line["system"]].append(line["metric"])
+
+    # average
+    system_to_human = {
+        system:np.average(system_v)
+        for system, system_v in system_to_human.items()
+    }
+    system_to_metric = {
+        system:np.average(system_v)
+        for system, system_v in system_to_metric.items()
+    }
+
+    acc = []
+    for system_a, system_b in itertools.combinations(system_to_human.keys(), 2):
+        # check if directions are the same
+        acc.append(
+            (system_to_human[system_a] < system_to_human[system_b]) ==
+            (system_to_metric[system_a] < system_to_metric[system_b])
+        )
+
+    return np.average(acc)
+
+
+def compute_system_spearman(data):
+    import collections
+    import numpy as np
+    from scipy.stats import spearmanr
+
+    system_to_human = collections.defaultdict(list)
+    system_to_metric = collections.defaultdict(list)
+    for line in data:
+        system_to_human[line["system"]].append(line["human"])
+        system_to_metric[line["system"]].append(line["metric"])
+
+    # average
+    system_to_human = {
+        system:np.average(system_v)
+        for system, system_v in system_to_human.items()
+    }
+    system_to_metric = {
+        system:np.average(system_v)
+        for system, system_v in system_to_metric.items()
+    }
+    systems = list(system_to_human.keys())
+
+    return spearmanr(
+        [system_to_human[system] for system in systems],
+        [system_to_metric[system] for system in systems],
+    )
+
+def load_metric_scores(metric_path, pattern_ref, aggregate="average"):
+    """
+    Returns metrics computed using a specific 
+    """
+
+
+    import re
+    import collections
+    import numpy as np
+    import random
+    random.seed(0)
+
+    if aggregate == "average":
+        aggregate = np.average
+    elif aggregate == "random":
+        aggregate = random.choice
+    else:
+        raise Exception("Unknown aggregator " + str(aggregate))
+
+    pattern_ref = re.compile(pattern_ref)
+
+    # checks if a particular (src, tgt, ref) is permissible
+    refids_data = load_json("computed/metric_scores_none.json")
+    triplet_to_refids = collections.defaultdict(set)
+    for line in refids_data:
+        for ref in line["ref"]:
+            triplet_to_refids[(line["src"], line["tgt"], ref[0])].add(ref[1])
+
+    data_metric = load_json(metric_path)
+
+    tuple_to_metric_score = collections.defaultdict(list)
+    for x in data_metric:
+        refids = triplet_to_refids[(x[0], x[1], x[2])]
+
+        # filter scores which don't satisfy the pattern match
+        if not any(pattern_ref.match(refid) for refid in refids):
+            continue
+
+        tuple_to_metric_score[(x[0], x[1])].append(x[3])
+
+    # average multiple scores
+    tuple_to_metric_score = {
+        # src, tgt -> score
+        k:aggregate(v)
+        for k,v in tuple_to_metric_score.items()
+    }
+    return tuple_to_metric_score
+
 def get_device():
     import torch
     if torch.cuda.is_available():

@@ -37,10 +37,10 @@ tab_ref_count = len({
 print("Reference count: ", "160*4=640")
 
 tab_ref_annotations = len({
-    line["source"]+"||||" +doc["uid"]
+    line["source"] + "||||" + doc["uid"]
     for doc in data
     for line in doc["lines"]
-})*4
+}) * 4
 print("Reference annotations count: ", tab_ref_annotations)
 
 

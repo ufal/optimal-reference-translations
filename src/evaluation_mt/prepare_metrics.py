@@ -9,9 +9,10 @@ data_ort = load_json("data/annotations.json")
 data_wmt = load_wmt()
 
 FIRST_ROUND_TO_NAME = {
-    "1": "R1",
+    # worst to best
+    "3": "R1",
     "2": "R2",
-    "3": "R3",
+    "1": "R3",
     "4": "R4",
 }
 

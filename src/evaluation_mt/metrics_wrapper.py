@@ -80,7 +80,7 @@ def _bleurt(data):
 
     out = []
     with torch.no_grad():
-        for line in data:
+        for line in tqdm.tqdm(data):
             inputs = bleurt_tokenizer(
                 [line[1]], [line[2]], padding=True, truncation=True, return_tensors='pt'
             ).to("cuda:0")
@@ -102,4 +102,14 @@ METRICS = {
     "comet20": functools.partial(_comet, model="Unbabel/wmt20-comet-da"),
     "comet22": functools.partial(_comet, model="Unbabel/wmt22-comet-da"),
     "bleurt": _bleurt,
+}
+
+METRIC_NAMES = {
+    "random": "Random",
+    "bleu": "BLEU",
+    "chrf": "ChrF",
+    "ter": "TER",
+    "comet20": "COMET$^{20}$",
+    "comet22": "COMET$^{22}$",
+    "bleurt": "BLEURT",
 }
