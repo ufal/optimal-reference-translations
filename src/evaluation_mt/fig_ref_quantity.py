@@ -13,7 +13,7 @@ random.seed(0)
 
 data_wmt = utils.load_wmt()
 
-plt.figure(figsize=(4, 2.5))
+plt.figure(figsize=(4, 2))
 ax = plt.gca()
 ax.spines[['right', 'top']].set_visible(False)
 
@@ -30,10 +30,10 @@ METRIC_COLORS = {
 
 
 METRIC_OFFSET = {
-    "bleu": (-0, -0.007),
-    "chrf": (-0, +0.005),
-    "comet20": (+0.5, -0.007),
-    "bleurt": (-0, +0.005),
+    "bleu": (-0, -0.0075),
+    "chrf": (-0, +0.0055),
+    "comet20": (+0.5, -0.0075),
+    "bleurt": (-0, +0.0055),
 }
 for metric in ["bleu", "chrf", "comet20", "bleurt"]:
     scores = []
@@ -103,7 +103,7 @@ plt.yticks(
     ["0.08", "0.10", ".12", ".14", ".16", "0.18", "0.20"],
 )
 plt.ylabel("Kendall's $\\tau$", labelpad=-7)
-plt.xlabel(" "*8 + "References count", labelpad=-10)
+plt.xlabel(" "*7 + "References count", labelpad=-10)
 plt.tight_layout(pad=0.05)
 plt.savefig("computed/ref_quantity.pdf")
 plt.show()
