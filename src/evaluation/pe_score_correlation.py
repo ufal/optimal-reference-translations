@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append("src")
-from utils import CATEGORIES, read_json
+from utils import CATEGORIES, load_json
 import numpy as np
 import fig_utils
 import matplotlib.pyplot as plt
@@ -33,7 +33,7 @@ def get_color(val):
         return "white"
 
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 hits_inconsistency = 0
 hits_total = 0
 data_lines = []

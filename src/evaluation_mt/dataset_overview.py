@@ -2,10 +2,10 @@
 
 import sys
 sys.path.append("src")
-from utils import read_json, load_wmt
+from utils import load_json, load_wmt
 import numpy as np
 
-data = read_json("data/annotations.json")
+data = load_json("data/annotations.json")
 
 
 tab_doc_count = len({

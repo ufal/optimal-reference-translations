@@ -39,7 +39,7 @@ def load_data_structure(filename="data/translations.csv"):
     return data_new
 
 def load_wmt():
-    data = read_json("data/annotations.json")
+    data = load_json("data/annotations.json")
     srcs = list({line["source"] for user_line in data for line in user_line["lines"]})
 
     data_new = []
@@ -90,7 +90,7 @@ def save_pickle(path, data):
         pickler.dump(data)
 
 
-def read_json(path):
+def load_json(path):
     with open(path, "r") as fread:
         return json.load(fread)
 

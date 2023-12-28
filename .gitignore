@@ -1,7 +1,5 @@
 # added by zouharvi
-computed/*.embd
-computed/*.xlsx
-computed/*.xlsx#
+computed/
 data/**/*.xlsx
 data/**/*.json
 data/**/*.gz

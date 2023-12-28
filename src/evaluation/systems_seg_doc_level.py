@@ -2,14 +2,14 @@
 
 import sys
 sys.path.append("src")
-from utils import read_json
+from utils import load_json
 import fig_utils
 from collections import defaultdict
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 doclevel = defaultdict(lambda: defaultdict(list))
 sentlevel = defaultdict(lambda: defaultdict(list))
 sentpairs = []

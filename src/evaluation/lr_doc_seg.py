@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append("src")
-from utils import read_json
+from utils import load_json
 import fig_utils
 import numpy as np
 import matplotlib.pyplot as plt
@@ -10,7 +10,7 @@ import matplotlib as mpl
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 xs_doc = []
 ys_doc = []
 xs_seg = []

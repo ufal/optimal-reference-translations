@@ -2,10 +2,10 @@
 
 import sys
 sys.path.append("src")
-from utils import read_json
+from utils import load_json
 import numpy as np
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 xs_doc = []
 xs_seg = []
 features = [

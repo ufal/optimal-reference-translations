@@ -3,14 +3,14 @@
 import collections
 import sys
 sys.path.append("src")
-from utils import read_json
+from utils import load_json
 import numpy as np
 import matplotlib.pyplot as plt
 from sacrebleu import sentence_ter, sentence_chrf
 import tqdm
 import fig_utils
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 metric_scores = []
 rating_scores = []
 post_edited = []

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 
-from utils import read_json, save_json
-data = read_json("data/parsed.json")
+from utils import load_json, save_json
+data = load_json("data/parsed.json")
 
 UID_TO_EXPERTISE = {
     "sahara": 1,

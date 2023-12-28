@@ -4,7 +4,7 @@ import sys
 
 import numpy as np
 sys.path.append("src")
-from utils import read_json, UID_MAP
+from utils import load_json, UID_MAP
 import tqdm
 import collections
 import scipy.stats as st
@@ -20,7 +20,7 @@ def get_conf_interval(data):
     return interval
 
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 SYSTEMS = ["1", "2", "3", "4"]
 
 data_lines = collections.defaultdict(list)

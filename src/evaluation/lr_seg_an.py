@@ -2,7 +2,7 @@
 
 import sys
 sys.path.append("src")
-from utils import read_json, UID_MAP
+from utils import load_json, UID_MAP
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
@@ -11,7 +11,7 @@ import sacrebleu
 
 metric_bleu = sacrebleu.metrics.BLEU(effective_order=True)
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 xs_uid = collections.defaultdict(list)
 bleus_uid = collections.defaultdict(list)
 ys_uid = collections.defaultdict(list)

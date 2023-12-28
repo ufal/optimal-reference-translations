@@ -4,10 +4,10 @@ import sys
 
 import numpy as np
 sys.path.append("src")
-from utils import CATEGORIES, read_json
+from utils import CATEGORIES, load_json
 import tqdm
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 ys = []
 xs = []
 

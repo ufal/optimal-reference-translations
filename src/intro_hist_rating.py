@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from utils import read_json
+from utils import load_json
 from collections import defaultdict
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 sentlevel = defaultdict(lambda: defaultdict(list))
 sentpairs = []
 time = []

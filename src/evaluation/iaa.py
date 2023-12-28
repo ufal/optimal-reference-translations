@@ -3,11 +3,11 @@
 import collections
 import sys
 sys.path.append("src")
-from utils import read_json
+from utils import load_json
 import numpy as np
 from scipy.stats import spearmanr
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 d_seg = collections.defaultdict(list)
 d_doc = collections.defaultdict(list)
 d_seg_uid = collections.defaultdict(dict)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from utils import read_json
+from utils import load_json
 from collections import defaultdict
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,7 +9,7 @@ sys.path.append("src")
 import fig_utils
 from consts import *
 
-data = read_json("data/parsed.json")
+data = load_json("data/parsed.json")
 rating_scores = []
 
 data_time = defaultdict(lambda: list())
