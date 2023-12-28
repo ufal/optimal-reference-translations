@@ -141,34 +141,33 @@ def load_metric_scores(metric_path, pattern_ref, aggregate="average"):
     Returns metrics computed using a specific 
     """
 
-
     import re
     import collections
     import numpy as np
     import random
-    random.seed(0)
 
-    if aggregate == "average":
-        aggregate = np.average
-    elif aggregate == "random":
-        aggregate = random.choice
-    elif aggregate == "max":
-        aggregate = max
-    elif aggregate == "min":
-        aggregate = min
-    else:
-        raise Exception("Unknown aggregator " + str(aggregate))
+    if type(aggregate) is str:
+        if aggregate == "average":
+            aggregate = np.average
+        elif aggregate == "random":
+            aggregate = random.choice
+        elif aggregate == "max":
+            aggregate = max
+        elif aggregate == "min":
+            aggregate = min
+        else:
+            raise Exception("Unknown aggregator " + str(aggregate))
 
     pattern_ref = re.compile(pattern_ref)
 
     # checks if a particular (src, tgt, ref) is permissible
-    refids_data = load_json("computed/metric_scores_none.json")
+    refids_data = load_json("computed/metric_scores_none.json", cache=True)
     triplet_to_refids = collections.defaultdict(set)
     for line in refids_data:
         for ref in line["ref"]:
             triplet_to_refids[(line["src"], line["tgt"], ref[0])].add(ref[1])
 
-    data_metric = load_json(metric_path)
+    data_metric = load_json(metric_path, cache=True)
 
     tuple_to_metric_score = collections.defaultdict(list)
     for x in data_metric:
@@ -207,9 +206,20 @@ def save_pickle(path, data):
         pickler.dump(data)
 
 
-def load_json(path):
+JSON_CACHE= {}
+def load_json(path, cache=False):
+    if cache:
+        import copy
+        if path in JSON_CACHE:
+            return copy.deepcopy(JSON_CACHE[path])
+
     with open(path, "r") as fread:
-        return json.load(fread)
+        data = json.load(fread)
+    
+    if cache:
+        JSON_CACHE[path] = copy.deepcopy(data)
+
+    return data
 
 def save_json(path, data):
     with open(path, "w") as f:
