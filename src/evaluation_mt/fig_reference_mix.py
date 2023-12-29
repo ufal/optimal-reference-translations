@@ -19,26 +19,30 @@ METRIC_COLORS = {
     "bleurt": "#393",
 }
 METRIC_OFFSET = {
-    "bleu": (-0, -0.0095),
-    "chrf": (-0, +0.0055),
-    "comet20": (+0.5, -0.0075),
-    "bleurt": (-0, +0.0055),
+    "bleu": (-0.0, -0.011),
+    "chrf": (-0.0, +0.006),
+    "comet20": (+0.5, -0.010),
+    "bleurt": (-0.0, +0.0055),
 }
 
-fig, (ax1, ax2) = plt.subplots(2, 1, height_ratios=(7, 1.5), figsize=(4, 2), sharex=True)
+fig, (ax1, ax2) = plt.subplots(
+    2, 1,
+    height_ratios=(7, 1),
+    figsize=(4, 1.5),
+    sharex=True
+)
 ax1.spines[['right', 'top', 'bottom']].set_visible(False)
 ax2.spines[['left', 'right', 'top', 'bottom']].set_visible(False)
 
 for metric in ["comet20", "bleurt", "chrf", "bleu"]:
     metric_score = {
-        pattern_ref:utils.load_metric_scores(
-                f"computed/metric_scores_{metric}.json",
-                pattern_ref=pattern_ref,
-                aggregate="average",
-            )
+        pattern_ref: utils.load_metric_scores(
+            f"computed/metric_scores_{metric}.json",
+            pattern_ref=pattern_ref,
+            aggregate="average",
+        )
         for pattern_ref in PATTERNS_REF
     }
-
 
     scores = []
     for RA, RB in zip(PATTERNS_REF, PATTERNS_REF[1:]):
@@ -47,7 +51,9 @@ for metric in ["comet20", "bleurt", "chrf", "bleu"]:
 
             corrs = []
             for _ in range(50):
-                indices_a = set(random.sample(indices, k=int(proportion*len(data_wmt))))
+                indices_a = set(random.sample(
+                    indices, k=int(proportion * len(data_wmt))
+                ))
                 indices_b = {i for i in indices if i not in indices_a}
                 data_wmt_local = [
                     {
@@ -82,13 +88,12 @@ for metric in ["comet20", "bleurt", "chrf", "bleu"]:
         linewidth=2,
     )
     ax1.text(
-        x=len(scores)+METRIC_OFFSET[metric][0],
-        y=scores[-1]+METRIC_OFFSET[metric][1],
+        x=len(scores) + METRIC_OFFSET[metric][0],
+        y=scores[-1] + METRIC_OFFSET[metric][1],
         s=metrics_wrapper.METRIC_NAMES[metric],
         ha="right", va="center",
         color=METRIC_COLORS[metric],
     )
-
 
 
 PATTERNS_REF_COLORS = {
@@ -99,25 +104,25 @@ PATTERNS_REF_COLORS = {
 }
 
 for r_i, r_v in enumerate(PATTERNS_REF):
-    if r_i != len(PATTERNS_REF)-1:
+    if r_i != len(PATTERNS_REF) - 1:
         ax2.fill_between(
-            x=[r_i*PROP_COUNT, r_i*PROP_COUNT+PROP_COUNT],
+            x=[r_i * PROP_COUNT, r_i * PROP_COUNT + PROP_COUNT],
             y1=[0, 0],
             y2=[1, 0],
             color=PATTERNS_REF_COLORS[r_v],
         )
     if r_i != 0:
         ax2.fill_between(
-            x=[(r_i-1)*PROP_COUNT, (r_i-1)*PROP_COUNT+PROP_COUNT],
+            x=[(r_i - 1) * PROP_COUNT, (r_i - 1) * PROP_COUNT + PROP_COUNT],
             y1=[1, 0],
             y2=[1, 1],
             color=PATTERNS_REF_COLORS[r_v],
         )
     ax2.text(
         x=(
-            r_i*PROP_COUNT+2
+            r_i * PROP_COUNT + 1.25
             if r_i == 0 else
-            r_i*PROP_COUNT-2
+            r_i * PROP_COUNT - 1
         ),
         y=0.3 if r_i == 0 else 0.5,
         s=r_v,
@@ -133,8 +138,8 @@ ax1.set_yticks(
 ax2.set_xticks([])
 ax2.set_yticks([])
 ax2.set_ylim(0, 1)
-ax2.set_ylabel("Proportion", rotation=0, fontsize=9)
-ax2.yaxis.set_label_coords(-0.05, 0.3)
+ax2.set_ylabel("Proportion", rotation=0, fontsize=8.5)
+ax2.yaxis.set_label_coords(-0.045, 0.1)
 
 plt.tight_layout(pad=0.05)
 plt.subplots_adjust(hspace=-0.06)
