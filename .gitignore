@@ -1,4 +1,5 @@
 # added by zouharvi
+tmp.*
 computed/
 data/**/*.xlsx
 data/**/*.json

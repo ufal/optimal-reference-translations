@@ -2,6 +2,7 @@ import csv
 import pickle
 import json
 
+
 def load_data(filename="data/translations.csv"):
     with open(filename, "r") as f:
         data = list(csv.reader(f))[1:]
@@ -9,11 +10,12 @@ def load_data(filename="data/translations.csv"):
     data = [line[:6] for line in data if len(line[1]) != 0]
     return data
 
+
 def load_data_structure(filename="data/translations.csv"):
     with open(filename, "r") as f:
         # strip header
         data = list(csv.reader(f))[1:]
-    
+
     data_new = {}
     bucket = []
     cur_doc = None
@@ -22,7 +24,7 @@ def load_data_structure(filename="data/translations.csv"):
         if len(line[0]) != 0 and all([len(line[i]) == 0 for i in range(1, 3)]):
             # new document
             cur_doc = line[0]
-        elif all([len(line[i]) == 0 for i in range(0,len(line))]) and len(bucket) != 0:
+        elif all([len(line[i]) == 0 for i in range(0, len(line))]) and len(bucket) != 0:
             if cur_doc is None:
                 raise Exception()
             assert cur_doc not in data_new
@@ -32,18 +34,20 @@ def load_data_structure(filename="data/translations.csv"):
         elif len(line[1]) != 0:
             # proper text
             bucket.append(line[:6])
-    
+
     if cur_doc is not None:
         data_new[cur_doc] = bucket
 
     return data_new
 
+
 def load_wmt(annotation_path="data/annotations.json", wmt_path="data/data_tmp/"):
     data = load_json(annotation_path)
-    srcs = list({line["source"] for user_line in data for line in user_line["lines"]})
+    srcs = list({line["source"]
+                for user_line in data for line in user_line["lines"]})
 
     data_new = []
-    with open(wmt_path+"/text.tsv", "r") as f:
+    with open(wmt_path + "/text.tsv", "r") as f:
         data = list(f.readlines())
         for line_i, line in enumerate(data):
             sys, tgt, doc, src = line.removesuffix("\n").split("\t")
@@ -57,9 +61,9 @@ def load_wmt(annotation_path="data/annotations.json", wmt_path="data/data_tmp/")
                 "i": line_i
             })
 
-    with open(wmt_path+"/scores.tsv", "r") as f:
+    with open(wmt_path + "/scores.tsv", "r") as f:
         i_to_score = {
-            i:float(l.split("\t")[5]) if l.split("\t")[5] != "None" else 0
+            i: float(l.split("\t")[5]) if l.split("\t")[5] != "None" else 0
             for i, l in enumerate(f.readlines())
         }
 
@@ -70,11 +74,13 @@ def load_wmt(annotation_path="data/annotations.json", wmt_path="data/data_tmp/")
 
     return data_new
 
+
 def compute_segment_tau(data):
     from scipy.stats import kendalltau
     data_x = [x["human"] for x in data]
     data_y = [x["metric"] for x in data]
     return kendalltau(data_x, data_y)
+
 
 def compute_system_acc(data):
     import collections
@@ -89,11 +95,11 @@ def compute_system_acc(data):
 
     # average
     system_to_human = {
-        system:np.average(system_v)
+        system: np.average(system_v)
         for system, system_v in system_to_human.items()
     }
     system_to_metric = {
-        system:np.average(system_v)
+        system: np.average(system_v)
         for system, system_v in system_to_metric.items()
     }
 
@@ -121,11 +127,11 @@ def compute_system_spearman(data):
 
     # average
     system_to_human = {
-        system:np.average(system_v)
+        system: np.average(system_v)
         for system, system_v in system_to_human.items()
     }
     system_to_metric = {
-        system:np.average(system_v)
+        system: np.average(system_v)
         for system, system_v in system_to_metric.items()
     }
     systems = list(system_to_human.keys())
@@ -135,7 +141,8 @@ def compute_system_spearman(data):
         [system_to_metric[system] for system in systems],
     )
 
-def load_metric_scores(metric_path, pattern_ref, aggregate="average", refids_path="computed/metric_scores_none.json"):
+
+def load_metric_scores(metric_path, pattern_ref, aggregate="average", ref_filter=lambda x: x[3], refids_path="computed/metric_scores_none.json"):
     """
     Returns metrics computed using a specific 
     """
@@ -176,15 +183,16 @@ def load_metric_scores(metric_path, pattern_ref, aggregate="average", refids_pat
         if not any(pattern_ref.match(refid) for refid in refids):
             continue
 
-        tuple_to_metric_score[(x[0], x[1])].append(x[3])
+        tuple_to_metric_score[(x[0], x[1])].append(ref_filter(x))
 
     # average multiple scores
     tuple_to_metric_score = {
         # src, tgt -> score
-        k:aggregate(v)
-        for k,v in tuple_to_metric_score.items()
+        k: aggregate(v)
+        for k, v in tuple_to_metric_score.items()
     }
     return tuple_to_metric_score
+
 
 def get_device():
     import torch
@@ -199,13 +207,16 @@ def read_pickle(path):
         reader = pickle.Unpickler(fread)
         return reader.load()
 
+
 def save_pickle(path, data):
     with open(path, "wb") as fwrite:
         pickler = pickle.Pickler(fwrite)
         pickler.dump(data)
 
 
-JSON_CACHE= {}
+JSON_CACHE = {}
+
+
 def load_json(path, cache=False):
     if cache:
         import copy
@@ -214,11 +225,12 @@ def load_json(path, cache=False):
 
     with open(path, "r") as fread:
         data = json.load(fread)
-    
+
     if cache:
         JSON_CACHE[path] = copy.deepcopy(data)
 
     return data
+
 
 def save_json(path, data):
     with open(path, "w") as f:
