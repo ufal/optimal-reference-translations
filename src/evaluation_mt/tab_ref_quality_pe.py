@@ -2,6 +2,8 @@ import sys
 sys.path.append("src")
 import utils
 import metrics_wrapper
+import collections
+import numpy as np
 import argparse
 
 args = argparse.ArgumentParser()
@@ -20,6 +22,7 @@ def format_corr_cell(value1, value2):
     else:
         return f"& \\minusA {value1-value2:.3f}".replace("%", "\\%")
 
+ref_avg = collections.defaultdict(list)
 
 for metric in ["bleu", "chrf", "ter", "comet20", "comet22", "bleurt"]:
     print(f"{metrics_wrapper.METRIC_NAMES[metric]:<12}", end=" ")
@@ -60,7 +63,17 @@ for metric in ["bleu", "chrf", "ter", "comet20", "comet22", "bleurt"]:
             for x in data_wmt
         ]
         corr_pe, _ = utils.compute_segment_tau(data_wmt_local)
+        ref_avg[pattern_ref].append((corr_orig, corr_pe))
+
 
         print(format_corr_cell(corr_orig, corr_pe), end=" ")
 
     print("\\\\")
+print(r"\bf Average", end=" ")
+for pattern_ref in ["R1", "R2", "R3", "R4"]:
+    print(format_corr_cell(
+        np.average([x[0] for x in ref_avg[pattern_ref]]),
+        np.average([x[1] for x in ref_avg[pattern_ref]]),
+    ), end=" ")
+
+print("\\\\")
