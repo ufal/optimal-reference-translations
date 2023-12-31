@@ -1,8 +1,33 @@
+This is a repository for two papers.
+
+- Quality and Quantity of Machine Translation References and Automated Metrics [paper WIP] -- Effect of reference quality and quantity on automatic metric performance.
+- Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787) -- Creation of the data and human aspects of annotation and translation.
+
+# Quality and Quantity of Machine Translation References and Automated Metrics [paper WIP]
+
+> **Abstract:** Automatic machine translation metrics often use _human_ translations to determine the quality _system_ translations. Common wisdom in the field dictates that the human references should be of very high quality. However, there are no cost-benefit analyses that could be used to guide practitioners who plan to collect references for machine translation evaluation. We find that higher-quality references lead to better metric correlations with humans at the segment-level. Having up to 7 references per segment and taking their average helps. Interestingly, the references from vendors of different qualities can be mixed together and improve metric success. Higher quality references, however, cost more to create and we frame this as an optimization problem: given a specific budget, what types of references should be collected to maximize metric success. These findings can be used by evaluators of shared tasks when references need to be created under a certain budget.
+
+Cite [this work][TODO] as:
+```
+@misc{TODO}
+```
+
+## Results
+
+Higher quality translation lead to better segment-level correlations. Very high quality translations (R4, which come from translatologists) contain translation shifts and are not the best as references.
+Using up to 7 references per segment helps.
+
+<!-- TODO next to each other-->
+
+A heuristic-based algorithm can select which references to invest in.
+
+<!-- TODO next to each other-->
+
 # Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)
 
 > **Abstract:** The overall translation quality reached by current machine translation (MT) systems for high-resourced language pairs is remarkably good. Standard methods of evaluation are not suitable nor intended to uncover the many translation errors and quality deficiencies that still persist. Furthermore, the quality of standard reference translations is commonly questioned and comparable quality levels have been reached by MT alone in several language pairs. Navigating further research in these high-resource settings is thus difficult. In this article, we propose a methodology for creating more reliable document-level human reference translations, called "optimal reference translations," with the simple aim to raise the bar of what should be deemed "human translation quality." We evaluate the obtained document-level optimal reference translations in comparison with "standard" ones, confirming a significant quality increase and also documenting the relationship between evaluation and translation editing.
 
-This is project at ÚFAL / Charles University. [Paper](https://arxiv.org/abs/2311.16787) to be published in Natural Language Engineering 2024.
+This is project at ETH Zürich and ÚFAL Charles University. [Paper](https://arxiv.org/abs/2311.16787) to be published in Natural Language Engineering 2024.
 For now cite as:
 ```
 @misc{zouhar2023evaluating,
