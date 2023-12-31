@@ -1,9 +1,11 @@
 This is a repository for two papers.
 
-- Quality and Quantity of Machine Translation References and Automated Metrics [paper WIP] -- Effect of reference quality and quantity on automatic metric performance.
-- Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787) -- Creation of the data and human aspects of annotation and translation.
+- **Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]**
+  > Effect of reference quality and quantity on automatic metric performance.
+- **Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)**
+  > Creation of the data and human aspects of annotation and translation.
 
-# Quality and Quantity of Machine Translation References and Automated Metrics [paper WIP]
+# Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]
 
 > **Abstract:** Automatic machine translation metrics often use _human_ translations to determine the quality _system_ translations. Common wisdom in the field dictates that the human references should be of very high quality. However, there are no cost-benefit analyses that could be used to guide practitioners who plan to collect references for machine translation evaluation. We find that higher-quality references lead to better metric correlations with humans at the segment-level. Having up to 7 references per segment and taking their average helps. Interestingly, the references from vendors of different qualities can be mixed together and improve metric success. Higher quality references, however, cost more to create and we frame this as an optimization problem: given a specific budget, what types of references should be collected to maximize metric success. These findings can be used by evaluators of shared tasks when references need to be created under a certain budget.
 
@@ -17,11 +19,13 @@ Cite [this work][TODO] as:
 Higher quality translation lead to better segment-level correlations. Very high quality translations (R4, which come from translatologists) contain translation shifts and are not the best as references.
 Using up to 7 references per segment helps.
 
-<!-- TODO next to each other-->
+<img src="https://github.com/ufal/optimal-reference-translations/assets/7661193/d4cf2669-b2d8-40a3-9193-b1e8811090f2" width="48%">
+<img src="https://github.com/ufal/optimal-reference-translations/assets/7661193/c660daaa-ffd2-4229-8084-309e4db2b89f" width="48%">
 
-A heuristic-based algorithm can select which references to invest in.
+A heuristic-based algorithm can select which references to invest in. It is controlled by a hyperparameter which balances between quality and quantity.
 
-<!-- TODO next to each other-->
+<img src="https://github.com/ufal/optimal-reference-translations/assets/7661193/53e27e2e-57b6-4aa8-ae52-74f6adc649de" width="48%">
+<img src="https://github.com/ufal/optimal-reference-translations/assets/7661193/d5579fea-946c-4056-b4d6-ccdb8cefa3cb" width="48%">
 
 # Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)
 
