@@ -5,14 +5,6 @@ The expected input to each function is a list of tuples in the form of (src, tgt
 import tqdm
 import functools
 
-def _random(data):
-    import random
-
-    return [
-        random.random()
-        for line in tqdm.tqdm(data)
-    ]
-
 
 def _bleu(data):
     from sacrebleu.metrics import BLEU
@@ -95,7 +87,6 @@ def _bleurt(data):
 
 
 METRICS = {
-    "random": _random,
     "bleu": _bleu,
     "chrf": _chrf,
     "ter": _ter,
@@ -105,7 +96,6 @@ METRICS = {
 }
 
 METRIC_NAMES = {
-    "random": "Random",
     "bleu": "BLEU",
     "chrf": "ChrF",
     "ter": "TER",

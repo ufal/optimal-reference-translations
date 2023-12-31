@@ -6,7 +6,7 @@ import argparse
 
 args = argparse.ArgumentParser()
 args.add_argument("--out", default="computed/metric_scores_{METRIC}.json")
-args.add_argument("--metric", "-m", default="random")
+args.add_argument("--metric", "-m", default="bleu")
 args = args.parse_args()
 
 data = load_json("computed/metric_scores_none.json")
