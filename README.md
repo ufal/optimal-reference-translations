@@ -1,9 +1,4 @@
-This is a repository for two papers.
-
-- **Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]**
-  > Effect of reference quality and quantity on automatic metric performance.
-- **Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)**
-  > Creation of the data and human aspects of annotation and translation.
+This is a repository for two papers: **Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]** - effect of reference quality and quantity on automatic metric performance, and **Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)** - creation of the data and human aspects of annotation and translation.
 
 # Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]
 
