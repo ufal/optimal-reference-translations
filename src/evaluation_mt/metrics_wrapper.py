@@ -90,6 +90,7 @@ METRICS = {
     "bleu": _bleu,
     "chrf": _chrf,
     "ter": _ter,
+    "comet20qe": functools.partial(_comet, model="Unbabel/wmt20-comet-qe-da"),
     "comet20": functools.partial(_comet, model="Unbabel/wmt20-comet-da"),
     "comet22": functools.partial(_comet, model="Unbabel/wmt22-comet-da"),
     "bleurt": _bleurt,
@@ -99,7 +100,8 @@ METRIC_NAMES = {
     "bleu": "BLEU",
     "chrf": "ChrF",
     "ter": "TER",
-    "comet20": "COMET$^{20}$",
-    "comet22": "COMET$^{22}$",
+    "comet20qe": r"COMET$^{20}_\textrm{QE}$",
+    "comet20": r"COMET$^{20}$",
+    "comet22": r"COMET$^{22}$",
     "bleurt": "BLEURT",
 }
