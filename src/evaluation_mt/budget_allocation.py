@@ -48,9 +48,10 @@ def select_subset(S, B, quality_lambda, temp=1):
     }
 
     out = copy.deepcopy(R)
-    try:
-        while cost(R) < B:
-            out = copy.deepcopy(R)
+    patience = 0
+    while cost(R) < B and patience <= 30:
+        out = copy.deepcopy(R)
+        try:
             operation = random.choices(
                 population=["REPLACE", "ADD"],
                 weights=[quality_lambda, 1-quality_lambda],
@@ -103,9 +104,11 @@ def select_subset(S, B, quality_lambda, temp=1):
                 R[candidate_new[1]].add(candidate_new[0])
             else:
                 raise Exception("Unknown operation")
-    except:
-        # break when operation fails to be applied
-        pass
+            
+            patience = 0
+        except:
+            # break when operation fails to be applied
+            patience += 1
 
     return out
 
