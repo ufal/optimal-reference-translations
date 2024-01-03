@@ -20,8 +20,8 @@ def format_corr_cell(value):
 
 ref_avg = collections.defaultdict(list)
 
-# for metric in ["bleu", "chrf", "ter", "comet20", "comet22", "bleurt"]:
-for metric in ["comet20qe"]:
+for metric in ["bleu", "chrf", "ter", "comet20", "comet22", "bleurt"]:
+# for metric in ["comet20qe"]:
     print(f"& {metrics_wrapper.METRIC_NAMES[metric]:<12}", end=" ")
     for pattern_ref in ["R1", "R2", "R3", "R4"]:
         metric_score = utils.load_metric_scores(
