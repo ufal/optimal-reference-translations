@@ -1,12 +1,19 @@
-This is a repository for two papers: **Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]** - effect of reference quality and quantity on automatic metric performance, and **Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)** - creation of the data and human aspects of annotation and translation.
+This is a repository for two papers: **Quality and Quantity of Machine Translation References for Automated Metrics [[paper](https://arxiv.org/abs/2401.01283)]** - effect of reference quality and quantity on automatic metric performance, and **Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)** - creation of the data and human aspects of annotation and translation.
 
-# Quality and Quantity of Machine Translation References for Automated Metrics [paper WIP]
+# Quality and Quantity of Machine Translation References for Automated Metrics [[paper](https://arxiv.org/abs/2401.01283)]
 
 > **Abstract:** Automatic machine translation metrics often use _human_ translations to determine the quality _system_ translations. Common wisdom in the field dictates that the human references should be of very high quality. However, there are no cost-benefit analyses that could be used to guide practitioners who plan to collect references for machine translation evaluation. We find that higher-quality references lead to better metric correlations with humans at the segment-level. Having up to 7 references per segment and taking their average helps. Interestingly, the references from vendors of different qualities can be mixed together and improve metric success. Higher quality references, however, cost more to create and we frame this as an optimization problem: given a specific budget, what types of references should be collected to maximize metric success. These findings can be used by evaluators of shared tasks when references need to be created under a certain budget.
 
-Cite [this work][TODO] as:
+Cite [this paper][https://arxiv.org/abs/2401.01283] as:
 ```
-@misc{TODO}
+@misc{zouhar2024quality,
+      title={Quality and Quantity of Machine Translation References for Automated Metrics}, 
+      author={Vilém Zouhar and Ondřej Bojar},
+      year={2024},
+      eprint={2401.01283},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
 ```
 
 ## Results
