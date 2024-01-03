@@ -4,7 +4,7 @@ This is a repository for two papers: **Quality and Quantity of Machine Translati
 
 > **Abstract:** Automatic machine translation metrics often use _human_ translations to determine the quality _system_ translations. Common wisdom in the field dictates that the human references should be of very high quality. However, there are no cost-benefit analyses that could be used to guide practitioners who plan to collect references for machine translation evaluation. We find that higher-quality references lead to better metric correlations with humans at the segment-level. Having up to 7 references per segment and taking their average helps. Interestingly, the references from vendors of different qualities can be mixed together and improve metric success. Higher quality references, however, cost more to create and we frame this as an optimization problem: given a specific budget, what types of references should be collected to maximize metric success. These findings can be used by evaluators of shared tasks when references need to be created under a certain budget.
 
-Cite [this paper][https://arxiv.org/abs/2401.01283] as:
+Cite [this paper](https://arxiv.org/abs/2401.01283) as:
 ```
 @misc{zouhar2024quality,
       title={Quality and Quantity of Machine Translation References for Automated Metrics}, 
@@ -51,6 +51,8 @@ Our data is based on WMT2020 data and can thus be also used to e.g. evaluate the
 The process of the data is as follows:
 1. P1, P2, and P3 are independent translations from English to Czech. N1 is an expert translation by a translatologist.
 2. All the human translations are evaluated on document and segment level with detail (in [`data/annotations.json`](data/annotations.json)) by different types of human annotators (laypeople, translatology students, professional translators). If the translation is not perfect, the annotators provide a post-edited version for which they would assign the highest grade (6).
+
+Note: If you you also want to use the WMT2020 system submissions, please contact [Vilém Zouhar](vilem.zouhar@gmail.com). The code is here, just not pretty yet. 🙂
 
 ## Example usage
 
