@@ -13,7 +13,7 @@ random.seed(0)
 
 data_wmt = utils.load_wmt()
 
-plt.figure(figsize=(4, 1.7))
+plt.figure(figsize=(4, 1.9))
 ax = plt.gca()
 ax.spines[['right', 'top']].set_visible(False)
 

@@ -100,8 +100,8 @@ METRIC_NAMES = {
     "bleu": "BLEU",
     "chrf": "ChrF",
     "ter": "TER",
-    "comet20qe": r"COMET$^{20}_\textrm{QE}$",
-    "comet20": r"COMET$^{20}$",
-    "comet22": r"COMET$^{22}$",
+    "comet20qe": r"COMET$_{20}^\textrm{QE}$",
+    "comet20": r"COMET$_{20}$",
+    "comet22": r"COMET$_{22}$",
     "bleurt": "BLEURT",
 }
