@@ -19,16 +19,16 @@ METRIC_COLORS = {
     "bleurt": "#393",
 }
 METRIC_OFFSET = {
-    "bleu": (-0.0, -0.011),
-    "chrf": (-0.0, +0.006),
-    "comet20": (+0.5, -0.010),
+    "bleu": (-0.0, -0.015),
+    "chrf": (-0.0, +0.010),
+    "comet20": (+0.5, -0.015),
     "bleurt": (-0.0, +0.0055),
 }
 
 fig, (ax1, ax2) = plt.subplots(
     2, 1,
     height_ratios=(7, 1),
-    figsize=(4, 1.7),
+    figsize=(4, 1.4),
     sharex=True
 )
 ax1.spines[['right', 'top', 'bottom']].set_visible(False)

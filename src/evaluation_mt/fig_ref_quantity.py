@@ -13,7 +13,7 @@ random.seed(0)
 
 data_wmt = utils.load_wmt()
 
-plt.figure(figsize=(4, 1.9))
+plt.figure(figsize=(4, 1.5))
 ax = plt.gca()
 ax.spines[['right', 'top']].set_visible(False)
 
@@ -30,9 +30,9 @@ METRIC_COLORS = {
 
 
 METRIC_OFFSET = {
-    "bleu": (-0, -0.009),
-    "chrf": (-0, +0.006),
-    "comet20": (+0.5, -0.009),
+    "bleu": (-0, -0.012),
+    "chrf": (-0, +0.009),
+    "comet20": (+0.5, -0.012),
     "bleurt": (-0, +0.007),
 }
 for metric in ["bleu", "chrf", "comet20", "bleurt"]:
