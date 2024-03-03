@@ -46,11 +46,11 @@ For now cite as:
 }
 ```
 
-Collected English to Czech translation evaluation human data are in [`data/annotations.json`](data/annotations.json). The rest of this repository contains data preparation and evaluation code.
+Collected English to Czech translation evaluation human data are in [`data/ort_human.json`](data/ort_human.json). The rest of this repository contains data preparation and evaluation code.
 Our data is based on WMT2020 data and can thus be also used to e.g. evaluate the quality of various translations as references.
 The process of the data is as follows:
 1. P1, P2, and P3 are independent translations from English to Czech. N1 is an expert translation by a translatologist.
-2. All the human translations are evaluated on document and segment level with detail (in [`data/annotations.json`](data/annotations.json)) by different types of human annotators (laypeople, translatology students, professional translators). If the translation is not perfect, the annotators provide a post-edited version for which they would assign the highest grade (6).
+2. All the human translations are evaluated on document and segment level with detail (in [`data/ort_human.json`](data/ort_human.json)) by different types of human annotators (laypeople, translatology students, professional translators). If the translation is not perfect, the annotators provide a post-edited version for which they would assign the highest grade (6).
 
 Note: If you you also want to use the WMT2020 system submissions, please contact [Vilém Zouhar](vilem.zouhar@gmail.com). The code is here, just not pretty yet. 🙂
 
@@ -58,13 +58,13 @@ Note: If you you also want to use the WMT2020 system submissions, please contact
 
 ```bash
 # fetch data
-curl "https://raw.githubusercontent.com/ufal/optimal-reference-translations/main/data/annotations.json" > annotations.json
+curl "https://raw.githubusercontent.com/ufal/optimal-reference-translations/main/data/ort_human.json" > ort_human.json
 ```
 
 ```python3
 # in Python
 import json
-data = json.load(open("annotations.json"))
+data = json.load(open("ort_human.json"))
 
 # 220 annotated documents
 len(data)
@@ -97,7 +97,7 @@ Translatology students, professionals and laypeople perceive quality differently
 
 ## Data structure
 
-Beginning of [`data/annotations.json`](data/annotations.json):
+Beginning of [`data/ort_human.json`](data/ort_human.json):
 
 ```
 [

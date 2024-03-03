@@ -41,7 +41,7 @@ def load_data_structure(filename="data/translations.csv"):
     return data_new
 
 
-def load_wmt(annotation_path="data/annotations.json", wmt_path="data/data_tmp/"):
+def load_wmt(annotation_path="data/ort_human.json", wmt_path="data/data_tmp/"):
     data = load_json(annotation_path)
     srcs = list({line["source"]
                 for user_line in data for line in user_line["lines"]})

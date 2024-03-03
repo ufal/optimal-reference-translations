@@ -5,7 +5,7 @@ import sys
 sys.path.append("src")
 from utils import load_json, load_wmt, save_json
 
-data_ort = load_json("data/annotations.json")
+data_ort = load_json("data/ort_human.json")
 data_wmt = load_wmt()
 
 FIRST_ROUND_TO_NAME = {

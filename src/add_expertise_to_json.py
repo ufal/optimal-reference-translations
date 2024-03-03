@@ -36,4 +36,4 @@ for doc in data:
     })
 
 
-save_json("data/for_lindat/annotations.json", data_new)
+save_json("data/for_lindat/ort_human.json", data_new)
