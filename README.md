@@ -56,15 +56,10 @@ Note: If you you also want to use the WMT2020 system submissions, please contact
 
 ## Example usage
 
-```bash
-# fetch data
-curl "https://raw.githubusercontent.com/ufal/optimal-reference-translations/main/data/ort_human.json" > ort_human.json
-```
-
 ```python3
 # in Python
-import json
-data = json.load(open("ort_human.json"))
+from datasets import load_dataset
+data = load_dataset("zouharvi/optimal-reference-translations", 'ort_human')["train"]
 
 # 220 annotated documents
 len(data)
