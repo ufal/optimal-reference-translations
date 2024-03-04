@@ -61,7 +61,7 @@ Note: If you you also want to use the WMT2020 system submissions, please contact
 ```python3
 # in Python
 from datasets import load_dataset
-data = load_dataset("zouharvi/optimal-reference-translations", 'ort_human')["train"]
+data = list(load_dataset("zouharvi/optimal-reference-translations", 'ort_human', streaming=True)["train"])
 
 # 220 annotated documents
 len(data)
