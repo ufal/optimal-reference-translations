@@ -27,7 +27,7 @@ METRIC_PRETTY_NAME = {
     "bleu": "BLEU",
     "ter": "TER",
     "meteor": "METEOR",
-    "chrf": "ChrF",
+    "chrf": "chrF",
     "comet": "COMET",
     "bleurt": "BLEURT"
 }

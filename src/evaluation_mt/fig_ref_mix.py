@@ -28,7 +28,7 @@ METRIC_OFFSET = {
 fig, (ax1, ax2) = plt.subplots(
     2, 1,
     height_ratios=(7, 1),
-    figsize=(4, 1.4),
+    figsize=(4, 1.9),
     sharex=True
 )
 ax1.spines[['right', 'top', 'bottom']].set_visible(False)
