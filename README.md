@@ -1,6 +1,7 @@
 This is a repository for two papers: **Quality and Quantity of Machine Translation References for Automated Metrics [[paper](https://arxiv.org/abs/2401.01283)]** - effect of reference quality and quantity on automatic metric performance, and **Evaluating Optimal Reference Translations [[paper]](https://arxiv.org/abs/2311.16787)** - creation of the data and human aspects of annotation and translation.
 
-The dataset is [available on huggingface](https://huggingface.co/datasets/zouharvi/optimal-reference-translations).
+The compiled dataset is [available on huggingface](https://huggingface.co/datasets/zouharvi/optimal-reference-translations).
+This repository contains the same data, in addition to the raw data and all processing scripts.
 
 # Quality and Quantity of Machine Translation References for Automated Metrics [[paper](https://arxiv.org/abs/2401.01283)]
 
